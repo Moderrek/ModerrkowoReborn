@@ -1,0 +1,101 @@
+name: ModerrkowoReborn
+version: ${project.version}
+main: pl.moderr.moderrkowo.reborn.Main
+api-version: 1.16
+authors: [MODERR]
+description: Glowny plugin do serwera Minecraft z dodatkami Moderrkowo serii "Reborn"
+depend: [WorldGuard]
+commands:
+  ranking:
+    description: Komenda umozliwająca pokazanie top listy graczy
+  playerid:
+    description: Sprawda UUID gracza
+    permission: moderrkowo.checkid
+  adminchat:
+    description: Prywatny chat dla administratorow
+    permission: moderr.adminchat
+  ahelpop:
+    description: Odpowiadanie na helpop graczy
+    permission: moderr.adminhelpop
+  chat:
+    description: Ustawienia chatu
+    permission: moderr.admin
+  endersee:
+    description: Podglad skrzyni kresu
+    permission: moderr.admin
+  fly:
+    description: Umozliwia latanie
+    permission: moderr.admin
+  gamemode:
+    description: Zmienia tryb gry
+    permission: moderr.admin
+  invsee:
+    description: Poglad ekwipunku
+    permission: moderr.admin
+  mban:
+    description: Banuje graczy
+    permission: moderr.ban
+  mkick:
+    description: Wyrzuca graczy
+    permission: moderr.kick
+  nazwa:
+    description: Zmienia nazwe przedmiotu
+    permission: moderr.admin
+  say:
+    description: Wysyla wiadomosc na chat jako administracja
+    permission: moderr.admin
+  sendalert:
+    description: Wysyla powiadomienie na chacie
+    permission: moderr.admin
+  vanish:
+    aliases: [ v ]
+    description: Ukrywa cie
+    permission: moderr.vanish
+  craftingdzialka:
+    description: Wysyla link do craftingu dzialki
+  discord:
+    description: Wysyla link do discorda
+  helpop:
+    aliases: [ pomoc ]
+    description: Mozliwosc pisania do administratorow
+  message:
+    aliases: [ msg ]
+    description: Mozliwosc pisania do graczy w prywatnej wiadomosci
+  reply:
+    aliases: [ r ]
+    description: Mozliwosc odpisania prywatnej wiadomosci
+  tpa:
+    aliases: [ tpr ]
+    description: Prosba o teleportacje do gracza
+  tpaccept:
+    description: Akceptacje teleportacji
+  tpdeny:
+    description: Odrzucanie teleportacji
+  pogoda:
+    aliases: [ weather ]
+    description: Glosowanie na zmiane pogody
+  dzialka:
+    aliases: [ cuboid ]
+    description: Zarzadzanie dzialka
+  timevote:
+    aliases: [ tv ]
+    description: Glosowanie na czas
+permissions:
+  moderr.vanish:
+    default: op
+  moderr.kick:
+    default: op
+  moderr.ban:
+    default: op
+  moderr.adminhelpop:
+    default: op
+  moderr.player:
+    default: true
+  moderr.admin:
+    default: op
+  moderr.adminchat:
+    default: op
+  moderrkowo.checkid:
+    default: op
+  moderr.cuboids.admin:
+    default: op
