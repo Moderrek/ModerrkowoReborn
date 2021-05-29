@@ -7,28 +7,50 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import pl.moderr.moderrkowo.reborn.Main;
+import pl.moderr.moderrkowo.reborn.mysql.User;
+import pl.moderr.moderrkowo.reborn.mysql.UserManager;
+import pl.moderr.moderrkowo.reborn.utils.ChatUtil;
+import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
 import pl.moderr.moderrkowo.reborn.utils.ItemStackUtils;
+import pl.moderr.moderrkowo.reborn.utils.Logger;
+import pl.moderr.moderrkowo.reborn.villagers.data.*;
 
 import java.time.Instant;
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class CropBreakListener implements Listener {
 
     private final Map<Player, Instant> cropMessage = new IdentityHashMap<>();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     private void farmBreak(BlockBreakEvent event) {
         final Block block = event.getBlock();
         final Player player = event.getPlayer();
+
+        if (block.getType().equals(Material.EMERALD_ORE) || block.getType().equals(Material.DIAMOND_ORE) || block.getType().equals(Material.ANCIENT_DEBRIS)) {
+            StringBuilder s = new StringBuilder();
+            for (ItemStack i : block.getDrops(player.getInventory().getItemInMainHand())) {
+                s.append(ChatUtil.materialName(i.getType())).append(" x").append(i.getAmount()).append(" ");
+            }
+            Logger.logAdminLog("&6" + player.getName() + " &7wykopał &7" + "&8(&7" + s + "&8) &8[&7" + ChatUtil.materialName(player.getInventory().getItemInMainHand().getType()) + "&8]");
+        }
+
+        if(event.isCancelled()){
+            return;
+        }
 
         if (player.isSneaking()) {
             return;
@@ -46,6 +68,36 @@ public class CropBreakListener implements Listener {
             world.spawn(block.getLocation(), ExperienceOrb.class).setExperience(ExpOrbs);
             for (ItemStack item : block.getDrops(player.getInventory().getItemInMainHand())) {
                 world.dropItemNaturally(block.getLocation(), item);
+            }
+            try {
+                User u = UserManager.getUser(player.getUniqueId());
+                PlayerVillagerData data = null;
+                for (PlayerVillagerData villagers : u.getVillagersData().getVillagersData().values()) {
+                    if (villagers.isActiveQuest()) {
+                        data = villagers;
+                        break;
+                    }
+                }
+                if (data == null) {
+                    return;
+                }
+                VillagerData villager = Main.getInstance().villagerManager.villagers.get(data.getVillagerId().toLowerCase());
+                Quest quest = villager.getQuests().get(data.getQuestIndex());
+                for (IQuestItem item : quest.getQuestItems()) {
+                    if(item instanceof IQuestItemCollect){
+                        if(!Objects.equals(getCropSeeds(block), ((IQuestItemCollect) item).getMaterial())){
+                            return;
+                        }
+                        int items = data.getQuestItemData().get(item.getQuestItemDataId());
+                        int temp = items;
+                        temp += 1;
+                        data.getQuestItemData().replace(item.getQuestItemDataId(), items, temp);
+                        player.sendMessage(ColorUtils.color(villager.getName() + " &6> &aZebrano " + ChatUtil.materialName(event.getBlock().getType())));
+                        u.UpdateScoreboard();
+                    }
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
             if (ItemStackUtils.consumeItem(player, 1, getCropSeeds(block))) {
                 autoReplant(block);

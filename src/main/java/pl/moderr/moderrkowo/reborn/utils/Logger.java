@@ -7,6 +7,9 @@ import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import pl.moderr.moderrkowo.reborn.Main;
+
+import java.util.logging.Level;
 
 public class Logger {
 
@@ -56,6 +59,15 @@ public class Logger {
                 p.sendMessage(ColorUtils.color("&9PL &6» &7" + message));
             }
         }
+    }
+
+    public static void logDatabaseMessage(String message) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.isOp()) {
+                p.sendMessage(ColorUtils.color("&9DB &6» &7" + message));
+            }
+        }
+        Main.getInstance().getLogger().log(Level.SEVERE, ColorUtils.color("&9DB &6» &7" + message));
     }
 
     public static void logDiscordMessage(String message) {

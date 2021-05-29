@@ -1,4 +1,4 @@
-package pl.moderr.moderrkowo.reborn.commands;
+package pl.moderr.moderrkowo.reborn.commands.user;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -22,8 +22,21 @@ public class RankingCommand implements CommandExecutor, TabCompleter {
             add("diamenty");
             add("czasgry");
             add("smierci");
+            add("redstone");
         }
     };
+
+    public Map<UUID, Integer> sortByValue(boolean order, Map<UUID, Integer> map) {
+        List<Map.Entry<UUID, Integer>> list = new LinkedList<>(map.entrySet());
+        list.sort((o1, o2) -> {
+            if (order) {
+                return o1.getValue().compareTo(o2.getValue());
+            } else {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        return map;
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -38,7 +51,7 @@ public class RankingCommand implements CommandExecutor, TabCompleter {
                 for (Player allPlayers : Bukkit.getOnlinePlayers()) {
                     unsorted.put(allPlayers.getUniqueId(), allPlayers.getStatistic(Statistic.MINE_BLOCK, Material.DIAMOND_ORE));
                 }
-                TreeMap<UUID, Integer> sortedRanking = new TreeMap<>(unsorted);
+                Map<UUID, Integer> sortedRanking = sortByValue(true, unsorted);
                 int i = 1;
                 p.sendMessage(ColorUtils.color("&8[!] &6Ranking wykopanych diamentów"));
                 for (UUID id : sortedRanking.keySet()) {
@@ -48,11 +61,25 @@ public class RankingCommand implements CommandExecutor, TabCompleter {
                 p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 return true;
             }
+            if (args[0].equalsIgnoreCase("redstone")) {
+                for (Player allPlayers : Bukkit.getOnlinePlayers()) {
+                    unsorted.put(allPlayers.getUniqueId(), allPlayers.getStatistic(Statistic.MINE_BLOCK, Material.REDSTONE_ORE));
+                }
+                Map<UUID, Integer> sortedRanking = sortByValue(true, unsorted);
+                int i = 1;
+                p.sendMessage(ColorUtils.color("&8[!] &6Ranking wykopanego redstone'a"));
+                for (UUID id : sortedRanking.keySet()) {
+                    p.sendMessage(ColorUtils.color("&8[!] &7" + i + ". &7Gracz &6" + Bukkit.getOfflinePlayer(id).getName() + " &7wykopał " + sortedRanking.get(id) + " redstone!"));
+                    i++;
+                }
+                p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                return true;
+            }
             if (args[0].equalsIgnoreCase("czasgry")) {
                 for (Player allPlayers : Bukkit.getOnlinePlayers()) {
                     unsorted.put(allPlayers.getUniqueId(), allPlayers.getStatistic(Statistic.PLAY_ONE_MINUTE));
                 }
-                TreeMap<UUID, Integer> sortedRanking = new TreeMap<>(unsorted);
+                Map<UUID, Integer> sortedRanking = sortByValue(true, unsorted);
                 int i = 1;
                 p.sendMessage(ColorUtils.color("&8[!] &6Ranking czasu gry"));
                 for (UUID id : sortedRanking.keySet()) {
@@ -66,7 +93,7 @@ public class RankingCommand implements CommandExecutor, TabCompleter {
                 for (Player allPlayers : Bukkit.getOnlinePlayers()) {
                     unsorted.put(allPlayers.getUniqueId(), allPlayers.getStatistic(Statistic.DEATHS));
                 }
-                Map<UUID, Integer> sortedRanking = new TreeMap<>(unsorted);
+                Map<UUID, Integer> sortedRanking = sortByValue(true, unsorted);
                 int i = 1;
                 p.sendMessage(ColorUtils.color("&8[!] &6Ranking śmierci"));
                 for (UUID id : sortedRanking.keySet()) {
@@ -78,7 +105,7 @@ public class RankingCommand implements CommandExecutor, TabCompleter {
             }
         }
         p.sendMessage(ColorUtils.color("&cNie wybrano żadnego rankingu."));
-        p.sendMessage(ColorUtils.color("&7Użycie &6/ranking <diamenty/czasgry/smierci>"));
+        p.sendMessage(ColorUtils.color("&7Użycie &6/ranking <diamenty/czasgry/smierci/redstone>"));
         p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
         return false;
     }

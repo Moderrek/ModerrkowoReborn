@@ -12,6 +12,7 @@ commands:
     description: Sprawda UUID gracza
     permission: moderrkowo.checkid
   adminchat:
+    aliases: [ ac ]
     description: Prywatny chat dla administratorow
     permission: moderr.adminchat
   ahelpop:
@@ -64,8 +65,8 @@ commands:
   reply:
     aliases: [ r ]
     description: Mozliwosc odpisania prywatnej wiadomosci
-  tpa:
-    aliases: [ tpr ]
+  tpr:
+    aliases: [tpa]
     description: Prosba o teleportacje do gracza
   tpaccept:
     description: Akceptacje teleportacji
@@ -80,6 +81,31 @@ commands:
   timevote:
     aliases: [ tv ]
     description: Glosowanie na czas
+  regulamin:
+    description: Caly regulamin serwera
+  villager:
+    permission: moderr.admin
+    description: Respi villagerow
+  spawn:
+    description: Teleportuje na spawna
+  setspawn:
+    permission: moderr.admin
+    description: Ustawia teleportacje na spawna
+  wyplac:
+    aliases: [ withdraw,banknot ]
+    description: wyplaca pieniadze z banku
+  portfel:
+    aliases: [ bank ]
+  home:
+    aliases: [ dom ]
+  sethome:
+    aliases: [ ustawdom ]
+  saveusers:
+    permission: moderr.op
+  holo:
+    permission: moderr.op
+  abank:
+    permission: moderr.op
 permissions:
   moderr.vanish:
     default: op

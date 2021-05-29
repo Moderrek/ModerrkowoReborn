@@ -101,6 +101,9 @@ public class PogodaCommand implements CommandExecutor, Listener, TabCompleter {
         if (e.toWeatherState()) {
             votedList = new ArrayList<>();
             Bukkit.broadcastMessage(ColorUtils.color("&8[!] &7Rozpoczęto głosowanie na zmianę pogody! &7/pogoda &7aby zagłosować."));
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+            }
             rain = true;
         } else {
             votedList = new ArrayList<>();

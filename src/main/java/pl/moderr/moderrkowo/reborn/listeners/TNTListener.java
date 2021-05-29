@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import pl.moderr.moderrkowo.reborn.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,9 +155,8 @@ public class TNTListener implements Listener {
                 p.playSound(e.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 5, 0.2f);
                 p.playSound(e.getLocation(), Sound.ENTITY_DRAGON_FIREBALL_EXPLODE, 5, 2f);
             }
-
         }
-        if (e.getEntityType() == EntityType.MINECART_TNT) {
+        /*if (e.getEntityType() == EntityType.MINECART_TNT) {
             e.setCancelled(true);
             e.getEntity().getWorld().createExplosion(e.getLocation(), 5);
             replaceSphere(e.getEntity().getLocation(), 8, false, Material.AIR, Material.FIRE, 3);
@@ -165,7 +165,7 @@ public class TNTListener implements Listener {
             replaceSphere(e.getEntity().getLocation(), 5, false, Material.STONE, Material.GRAVEL, 10);
             e.getEntity().getWorld().spawnParticle(Particle.FLAME, e.getLocation(), 200, 1, 1, 1, 0.2f);
             e.getEntity().getWorld().spawnParticle(Particle.SMOKE_LARGE, e.getLocation(), 100, 2, 2, 2, 0.1f);
-        }
+        }*/
     }
 
     public void cylinder(Location loc, Material mat, int r) {

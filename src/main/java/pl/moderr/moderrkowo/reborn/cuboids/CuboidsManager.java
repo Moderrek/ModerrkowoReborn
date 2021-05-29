@@ -17,8 +17,8 @@ import java.util.Objects;
 
 public class CuboidsManager {
 
-    private static Material cuboidMaterial;
-    private static String cuboidDisplayName;
+    private static Material cuboidMaterial = Material.LODESTONE;
+    private static String cuboidDisplayName = ColorUtils.color("&6Działka &e64x64");
 
     public static ItemStack getCuboidItem(int count) {
         if (count > 64 || count <= 0) {
@@ -36,8 +36,8 @@ public class CuboidsManager {
 
     public void Start() {
         try {
-            cuboidMaterial = Material.valueOf("LODESTONE");
-            cuboidDisplayName = ColorUtils.color("&aDziałka 64x64");
+            cuboidMaterial = Material.LODESTONE;
+            cuboidDisplayName = ColorUtils.color("&6Działka &e64x64");
             Main.getInstance().getServer().getPluginManager().registerEvents(new PlaceRemoveCuboid(), Main.getInstance());
             Objects.requireNonNull(Main.getInstance().getCommand("dzialka")).setExecutor(new CuboidCommand());
             ModerrkowoLog.LogAdmin("Wczytano działki.");

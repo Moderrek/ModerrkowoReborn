@@ -60,7 +60,7 @@ public class AntyLogoutManager implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void damage(EntityDamageByEntityEvent e) {
         if (e.isCancelled()) {
             return;
@@ -127,7 +127,7 @@ public class AntyLogoutManager implements Listener {
     }
 
     public void setAntyLogout(Player p) {
-        AntyLogoutItem item = new AntyLogoutItem(seconds, Bukkit.createBossBar(ColorUtils.color("&aANTY LOGOUT"), BarColor.RED, BarStyle.SOLID));
+        AntyLogoutItem item = new AntyLogoutItem(seconds, Bukkit.createBossBar(ColorUtils.color("&c⚔ Walka ⚔"), BarColor.RED, BarStyle.SOLID));
         if (!antyLogout.containsKey(p.getUniqueId())) {
             antyLogout.put(p.getUniqueId(), item);
             item.bossBar.addPlayer(p);

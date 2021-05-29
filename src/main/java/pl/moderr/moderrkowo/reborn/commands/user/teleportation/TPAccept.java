@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.moderr.moderrkowo.reborn.Main;
 import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
+import pl.moderr.moderrkowo.reborn.utils.Logger;
 
 import java.util.UUID;
 
@@ -34,8 +35,14 @@ public class TPAccept implements CommandExecutor {
                             p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                             requestP.playSound(requestP.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
                             p.sendMessage(ColorUtils.color("&aTeleportowanie..."));
+                            if(Main.getInstance().instanceAntyLogout.inFight(requestP.getUniqueId())){
+                                p.sendMessage(ColorUtils.color("&cNie można teleportować gracz jest podczas walki"));
+                                return true;
+                            }
                             requestP.sendMessage(ColorUtils.color("&a" + p.getName() + " zaakceptował prośbę o teleportacje!"));
                             requestP.teleport(p);
+                            //
+                            // Logger.logAdminLog(ColorUtils.color("&6" + requestP.getName() + " &7przeteleportował się do &6" + p.getName()));
                             return true;
                         }
                         p.sendMessage(ColorUtils.color("&cGracz jest już offline"));

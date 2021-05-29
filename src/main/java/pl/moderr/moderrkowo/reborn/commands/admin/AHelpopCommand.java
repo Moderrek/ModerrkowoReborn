@@ -28,12 +28,12 @@ public class AHelpopCommand implements CommandExecutor {
 
 
                         answerTo.sendMessage(" ");
-                        answerTo.sendMessage(ColorUtils.color(String.format("&8[&9Pomoc&8] &7%s&8: &e%s", p.getName(), answer)));
+                        answerTo.sendMessage(ColorUtils.color(String.format("&8[&9Pomoc&8] &c&lADM &e%s&8: &e%s", p.getName(), answer)));
                         answerTo.sendMessage(" ");
                         answerTo.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_YES, 1, 1);
                         for (Player player : Bukkit.getOnlinePlayers()) {
                             if (player.isOp()) {
-                                player.sendMessage(ColorUtils.color(String.format("&8[&9Pomoc&8] &7%s&8: &e%s", p.getName(), answer)));
+                                player.sendMessage(ColorUtils.color(String.format("&8[&9Pomoc&8] &c&lADM &e%s&8: &e%s", p.getName(), answer)));
                             }
                         }
                         //p.sendTitle(new Title(ColorUtils.color("&c&lModerrkowo"), ColorUtils.color("&eOdpowiedziano.")));
