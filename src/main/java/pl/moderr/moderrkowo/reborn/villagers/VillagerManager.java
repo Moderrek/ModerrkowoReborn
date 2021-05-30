@@ -19,6 +19,9 @@ import pl.moderr.moderrkowo.reborn.Main;
 import pl.moderr.moderrkowo.reborn.cuboids.CuboidsManager;
 import pl.moderr.moderrkowo.reborn.mysql.User;
 import pl.moderr.moderrkowo.reborn.mysql.UserManager;
+import pl.moderr.moderrkowo.reborn.opening.data.ModerrCaseEnum;
+import pl.moderr.moderrkowo.reborn.opening.data.StorageItem;
+import pl.moderr.moderrkowo.reborn.opening.data.StorageItemType;
 import pl.moderr.moderrkowo.reborn.utils.*;
 import pl.moderr.moderrkowo.reborn.villagers.data.*;
 
@@ -77,6 +80,18 @@ public class VillagerManager implements Listener {
                         }, new ArrayList<IQuestReward>() {
                     {
                         add((IQuestRewardMoney) () -> 25);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }
                 ));
@@ -124,6 +139,18 @@ public class VillagerManager implements Listener {
                     {
                         add((IQuestRewardMoney) () -> 65);
                         add((IQuestRewardExp) () -> 2);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }));
                 //</editor-fold>
@@ -186,6 +213,18 @@ public class VillagerManager implements Listener {
                     {
                         add((IQuestRewardItemStack) () -> new ItemStack(Material.BLAZE_ROD, 5));
                         add((IQuestRewardExp) () -> 4);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }
                 ));
@@ -217,6 +256,18 @@ public class VillagerManager implements Listener {
                     {
                         add((IQuestRewardMoney) () -> 1500);
                         add((IQuestRewardExp) () -> 12);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }
                 ));
@@ -281,6 +332,18 @@ public class VillagerManager implements Listener {
                         add((IQuestRewardMoney) () -> 500);
                         add((IQuestRewardItemStack) () -> new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1));
                         add((IQuestRewardExp) () -> 31);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }
                 ));
@@ -365,6 +428,18 @@ public class VillagerManager implements Listener {
 
                             }
                         });
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }));
                 //</editor-fold>
@@ -438,6 +513,18 @@ public class VillagerManager implements Listener {
                     {
                         add((IQuestRewardMoney) () -> 1250);
                         add((IQuestRewardExp) () -> 8);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }));
                 add(new Quest("Dostęp technologii", "Zapłać mi a dam ci\ndostęp do technologi.", QuestDifficulty.EASY, new ArrayList<IQuestItem>(){
@@ -457,6 +544,18 @@ public class VillagerManager implements Listener {
                 }, new ArrayList<IQuestReward>(){
                     {
                         add((IQuestRewardExp) () -> 11);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA x10";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(10, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(10, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }));
             }
@@ -487,6 +586,18 @@ public class VillagerManager implements Listener {
                         add((IQuestRewardItemStack) () -> new ItemStack(Material.BEETROOT,64));
                         add((IQuestRewardItemStack) () -> new ItemStack(Material.BEETROOT_SEEDS, 2));
                         add((IQuestRewardItemStack) () -> new ItemStack(Material.WHEAT, 48));
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }));
                 add(new Quest("Buraki cukrowe", "Mam dobre kontrakty,\nale potrzebuje pomocnika.\nPodzielimy się?", QuestDifficulty.NORMAL, new ArrayList<IQuestItem>(){
@@ -528,6 +639,18 @@ public class VillagerManager implements Listener {
                     {
                         add((IQuestRewardMoney) () -> 814);
                         add((IQuestRewardExp) () -> 25);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }));
                 add(new Quest("Zbiór Marchwi", "Zlecam Ci to zadanie.", QuestDifficulty.NORMAL, new ArrayList<IQuestItem>(){
@@ -553,6 +676,18 @@ public class VillagerManager implements Listener {
                     {
                         add((IQuestRewardMoney) () -> 414);
                         add((IQuestRewardExp) () -> 25);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }));
                 add(new Quest("Trzcina", "Dostałęm zlecenie na\ntwórstwo papieru", QuestDifficulty.NORMAL, new ArrayList<IQuestItem>(){
@@ -578,6 +713,18 @@ public class VillagerManager implements Listener {
                     {
                         add((IQuestRewardMoney) () -> 1050);
                         add((IQuestRewardExp) () -> 10);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
                     }
                 }));
             }
@@ -595,6 +742,186 @@ public class VillagerManager implements Listener {
         AddVillager(new VillagerData("Handlarz", new ArrayList<>(), new ArrayList<VillagerShopItem>(){
             {
                 add(new VillagerShopItem(CuboidsManager.getCuboidItem(1), 0,1,"Zakup swoją działkę!",8000));
+            }
+        }));
+        AddVillager(new VillagerData("Rybak", new ArrayList<Quest>(){
+            {
+                add(new Quest("Wędka 1", "Niedługo opis", QuestDifficulty.EASY, new ArrayList<IQuestItem>(){
+                    {
+                        add(new IQuestItemCraft() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.FISHING_ROD;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 4;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "1";
+                            }
+                        });
+                        add(new IQuestItemGive() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.FISHING_ROD;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 4;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "2";
+                            }
+                        });
+                        add(new IQuestItemPay() {
+                            @Override
+                            public int getCount() {
+                                return 20;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "3";
+                            }
+                        });
+                    }
+                }, new ArrayList<IQuestReward>(){
+                    {
+                        add((IQuestRewardItemStack) () -> new ItemStack(Material.FISHING_ROD,1));
+                        add((IQuestRewardExp) () -> 8);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
+                    }
+                }));
+                add(new Quest("Glony", "Niedługo opis", QuestDifficulty.HARD, new ArrayList<IQuestItem>(){
+                    {
+                        add(new IQuestItemGive() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.KELP;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 256;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "1";
+                            }
+                        });
+                        add(new IQuestItemKill() {
+                            @Override
+                            public EntityType getEntityType() {
+                                return EntityType.DROWNED;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 1;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "2";
+                            }
+                        });
+                    }
+                }, new ArrayList<IQuestReward>(){
+                    {
+                        add((IQuestRewardItemStack) () -> new ItemStack(Material.KELP,256));
+                        add((IQuestRewardExp) () -> 10);
+                        add((IQuestRewardMoney) () -> 275);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
+                    }
+                }));
+                add(new Quest("Suszenie glonów", "Niedługo opis", QuestDifficulty.HARD, new ArrayList<IQuestItem>(){
+                    {
+                        add(new IQuestItemGive() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.DRIED_KELP_BLOCK;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 32;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "1";
+                            }
+                        });
+                        add(new IQuestItemCraft() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.DRIED_KELP_BLOCK;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 32;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "2";
+                            }
+                        });
+                    }
+                }, new ArrayList<IQuestReward>(){
+                    {
+                        add((IQuestRewardItemStack) () -> ItemStackUtils.addEnchantment(new ItemStack(Material.FISHING_ROD,1), Enchantment.LURE,2));
+                        add((IQuestRewardExp) () -> 15);
+                        add((IQuestRewardMoney) () -> 3375);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
+                    }
+                }));
+            }
+        }, new ArrayList<VillagerShopItem>(){
+            {
+                add(new VillagerShopItem(new ItemStack(Material.STRING, 4),0,0,"",0,10));
             }
         }));
         //</editor-fold> Villagers
@@ -665,10 +992,12 @@ public class VillagerManager implements Listener {
             lore.add(ColorUtils.color(ColorUtils.color("&8" + item.getDescription())));
             lore.add(" ");
             if (item.canSell()) {
-                if (item.getCost() <= u.getMoney()) {
-                    lore.add(ColorUtils.color("&7Cena kupna: &a" + ChatUtil.getMoney(item.getCost())));
-                } else {
-                    lore.add(ColorUtils.color("&7Cena kupna: &c" + ChatUtil.getMoney(item.getCost())));
+                if(item.getCost() != 0){
+                    if (item.getCost() <= u.getMoney()) {
+                        lore.add(ColorUtils.color("&7Cena kupna: &a" + ChatUtil.getMoney(item.getCost())));
+                    } else {
+                        lore.add(ColorUtils.color("&7Cena kupna: &c" + ChatUtil.getMoney(item.getCost())));
+                    }
                 }
                 if(ItemStackUtils.getCountOfMaterial(u.getPlayer(), item.getItem().getType()) >= item.getItem().getAmount()){
                     lore.add(ColorUtils.color("&7Cena sprzedaży: &a" + ChatUtil.getMoney(item.getSellCost())));
@@ -682,10 +1011,18 @@ public class VillagerManager implements Listener {
                     lore.add(ColorUtils.color("&7Cena: &c" + ChatUtil.getMoney(item.getCost())));
                 }
             }
-            if (item.canSell()) {
-                lore.add(ColorUtils.color("&7LPM aby zakupić &8| &cPPM aby sprzedać"));
-            } else {
-                lore.add(ColorUtils.color("&7Kliknij aby zakupić"));
+            if(item.getCost() != 0){
+                if (item.canSell()) {
+                    lore.add(ColorUtils.color("&7LPM aby zakupić &8| &cPPM aby sprzedać"));
+                } else {
+                    lore.add(ColorUtils.color("&7Kliknij aby zakupić"));
+                }
+            }else{
+                if (item.canSell()) {
+                    lore.add(ColorUtils.color("&7PPM aby sprzedać"));
+                } else {
+                    lore.add(ColorUtils.color("&7Brak dostępnych akcji"));
+                }
             }
         } else {
             if(playerVillagerData.getQuestIndex() + 1 < item.getRequiredQuestLevel()){
@@ -1023,6 +1360,9 @@ public class VillagerManager implements Listener {
                     if (e.getAction() == InventoryAction.PICKUP_ALL) {
                         boolean unlocked = data.getQuestIndex() + 1 >= shopItem.getRequiredQuestLevel() && u.getLevel() >= shopItem.getRequiredPlayerLevel();
                         if (unlocked) {
+                            if(shopItem.getCost() == 0){
+                                return;
+                            }
                             if (u.hasMoney(shopItem.getCost())) {
                                 u.subtractMoney(shopItem.getCost());
                                 //p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &c- " + ChatUtil.getMoney(shopItem.getCost())));
@@ -1356,6 +1696,8 @@ public class VillagerManager implements Listener {
             e.setCancelled(true);
         }
     }
+    private final Map<UUID, Instant> commandDelay = new IdentityHashMap<>();
+
     @EventHandler
     public void villagerClick(PlayerInteractEntityEvent e) {
         Player p = e.getPlayer();
@@ -1367,12 +1709,20 @@ public class VillagerManager implements Listener {
                     return;
                 }
                 if (entity.getCustomName().equals(ColorUtils.color("&aLosowy teleport"))) {
-                    p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 0.5f);
-                    p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
-                    Location loc = RandomUtils.getRandom(p.getWorld());
-                    p.teleport(loc);
-                    p.sendActionBar(ColorUtils.color("&6x " + loc.getBlockX() + " y " + loc.getBlockY() + " z " + loc.getBlockZ()));
-                    Logger.logPluginMessage(p.getName() + " użył losowego teleportu.");
+                    final Instant now = Instant.now();
+                    commandDelay.compute(e.getPlayer().getUniqueId(), (uuid, instant) -> {
+                        if (instant != null && now.isBefore(instant)) {
+                            e.getPlayer().sendActionBar(ColorUtils.color("&cOdczekaj chwilę miedzy losowym teleportem"));
+                            return instant;
+                        }
+                        p.playSound(p.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 0.5f);
+                        p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 1);
+                        Location loc = RandomUtils.getRandom(p.getWorld());
+                        p.teleport(loc);
+                        p.sendActionBar(ColorUtils.color("&6x " + loc.getBlockX() + " y " + loc.getBlockY() + " z " + loc.getBlockZ()));
+                        Logger.logPluginMessage(p.getName() + " użył losowego teleportu.");
+                        return now.plusSeconds(30);
+                    });
                 }
                 if (entity.getCustomName().contains(ColorUtils.color("&c&lQ"))) {
                     String villagerName =

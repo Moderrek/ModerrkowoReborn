@@ -20,8 +20,7 @@ import pl.moderr.moderrkowo.reborn.commands.user.messages.ReplyCommand;
 import pl.moderr.moderrkowo.reborn.commands.user.teleportation.*;
 import pl.moderr.moderrkowo.reborn.commands.user.weather.PogodaCommand;
 import pl.moderr.moderrkowo.reborn.cuboids.CuboidsManager;
-import pl.moderr.moderrkowo.reborn.economy.PortfelCommand;
-import pl.moderr.moderrkowo.reborn.economy.WithdrawCommand;
+import pl.moderr.moderrkowo.reborn.economy.*;
 import pl.moderr.moderrkowo.reborn.listeners.*;
 import pl.moderr.moderrkowo.reborn.mysql.MySQL;
 import pl.moderr.moderrkowo.reborn.mysql.User;
@@ -37,6 +36,7 @@ import pl.moderr.moderrkowo.reborn.villagers.data.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -55,6 +55,7 @@ public final class Main extends JavaPlugin {
     //<editor-fold> AutoMessage
     public ModerrkowoAutoMessage autoMessage;
     private static MySQL mySQL;
+    public RynekManager instanceRynekManager;
 
     @Contract(pure = true)
     public static Main getInstance() {
@@ -89,6 +90,8 @@ public final class Main extends JavaPlugin {
         cuboidsManager = new CuboidsManager();
         cuboidsManager.Start();
         initializeMySQL();
+        instanceRynekManager = new RynekManager();
+        Bukkit.getPluginManager().registerEvents(instanceRynekManager, this);
         Logger.logPluginMessage("Wczytano działki");
         Logger.logPluginMessage("Wczytano plugin w &8(&a" + (System.currentTimeMillis() - start) + "ms&8)");
     }
@@ -100,6 +103,11 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        try {
+            instanceRynekManager.save();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         mySQL.disable();
         SaveDataYML();
         Logger.logPluginMessage("Wyłączono plugin");
@@ -160,6 +168,9 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("portfel")).setExecutor(new PortfelCommand());
         Objects.requireNonNull(getCommand("sethome")).setExecutor(new SetHomeCommand());
         Objects.requireNonNull(getCommand("home")).setExecutor(new HomeCommand());
+        Objects.requireNonNull(getCommand("acheststorage")).setExecutor(new AChestStorageCommand());
+        Objects.requireNonNull(getCommand("przelej")).setExecutor(new PrzelejCommand());
+        Objects.requireNonNull(getCommand("rynek")).setExecutor(new RynekCommand());
 
         Logger.logPluginMessage("Wczytano komendy");
     }

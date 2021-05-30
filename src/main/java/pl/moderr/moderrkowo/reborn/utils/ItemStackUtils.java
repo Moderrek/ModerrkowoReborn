@@ -4,15 +4,13 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ItemStackUtils {
 
@@ -256,4 +254,19 @@ public class ItemStackUtils {
         return count <= found;
     }
 
+    public static ItemStack addEnchantment(ItemStack item, Enchantment enchantment, int level){
+        ItemStack i = item.clone();
+        i.addEnchantment(enchantment, level);
+        return i;
+    }
+
+    public static ItemStack generateEnchantmentBook(Map<Enchantment, Integer> enchantments){
+        ItemStack itemStack = new ItemStack(Material.ENCHANTED_BOOK);
+        EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemStack.getItemMeta();
+        for(Enchantment enchantment : enchantments.keySet()){
+            meta.addStoredEnchant(enchantment, enchantments.get(enchantment), true);
+        }
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
 }

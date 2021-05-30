@@ -2,16 +2,20 @@ package pl.moderr.moderrkowo.reborn.opening;
 
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.Contract;
+import pl.moderr.moderrkowo.reborn.opening.data.ModerrCaseItem;
+import pl.moderr.moderrkowo.reborn.opening.data.ModerrCaseItemTemp;
 
 public class OpeningData {
 
-    private OpeningChestReward reward;
+    private ModerrCaseItemTemp reward;
+    private String name;
     private Inventory inv;
     private int taskId;
 
     @Contract(pure = true)
-    public OpeningData(OpeningChestReward reward, Inventory inv, int taskId){
+    public OpeningData(ModerrCaseItemTemp reward, String name, Inventory inv, int taskId){
         this.inv = inv;
+        this.name = name;
         this.taskId = taskId;
     }
 
@@ -32,11 +36,15 @@ public class OpeningData {
         this.taskId = taskId;
     }
 
-    public OpeningChestReward getReward() {
+    public ModerrCaseItemTemp getReward() {
         return reward;
     }
 
-    public void setReward(OpeningChestReward reward) {
+    public void setReward(ModerrCaseItemTemp reward) {
         this.reward = reward;
+    }
+
+    public String name() {
+        return name;
     }
 }

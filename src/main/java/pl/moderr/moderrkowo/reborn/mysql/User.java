@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 import org.jetbrains.annotations.Contract;
 import pl.moderr.moderrkowo.reborn.Main;
+import pl.moderr.moderrkowo.reborn.opening.data.UserChestStorage;
 import pl.moderr.moderrkowo.reborn.utils.ChatUtil;
 import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
 import pl.moderr.moderrkowo.reborn.villagers.data.*;
@@ -20,34 +21,31 @@ public class User {
     private final PlayerVillagersData villagersData;
     private int money;
     private int exp;
+    private final UserChestStorage userChestStorage;
 
     @Contract(pure = true)
-    public User(UUID uuid, int money, int exp, PlayerVillagersData villagersData) {
+    public User(UUID uuid, int money, int exp, PlayerVillagersData villagersData, UserChestStorage userChestStorage) {
         this.uuid = uuid;
         this.money = money;
         this.exp = exp;
         this.oldLevel = getLevel();
         this.villagersData = villagersData;
+        this.userChestStorage = userChestStorage;
     }
-
     public int getMoney() {
         return money;
     }
-
     public void setMoney(int money) {
         this.money = money;
         UpdateScoreboard();
     }
-
     public int getExp() {
         return exp;
     }
-
     public void setExp(int exp) {
         this.exp = exp;
         UpdateScoreboard();
     }
-
     public void addExp(int exp) {
         this.exp += exp;
         if(getLevel() > oldLevel){
@@ -62,38 +60,30 @@ public class User {
         }
         UpdateScoreboard();
     }
-
     public void subtractExp(int exp) {
         this.exp += exp;
         UpdateScoreboard();
     }
-
     public void addMoney(int money) {
         this.money += money;
         UpdateScoreboard();
     }
-
     public void subtractMoney(int money) {
         this.money -= money;
         UpdateScoreboard();
     }
-
     public boolean hasMoney(int money) {
         return this.money >= money;
     }
-
     public PlayerVillagersData getVillagersData() {
         return villagersData;
     }
-
     public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
-
     public String getName() {
         return getPlayer().getName();
     }
-
     public void UpdateScoreboard(){
         ScoreboardManager sm = Bukkit.getScoreboardManager();
         Scoreboard scoreboard = sm.getNewScoreboard();
@@ -259,7 +249,6 @@ public class User {
         }
         getPlayer().setScoreboard(scoreboard);
     }
-
     private int oldLevel;
     public int getLevel(int pd){
         if(pd >= 244){
@@ -278,5 +267,8 @@ public class User {
     }
     public int getLevel(){
         return getLevel(this.exp);
+    }
+    public UserChestStorage getUserChestStorage() {
+        return userChestStorage;
     }
 }

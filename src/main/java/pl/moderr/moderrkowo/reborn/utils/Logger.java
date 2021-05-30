@@ -61,6 +61,14 @@ public class Logger {
         }
     }
 
+    public static void logCaseMessage(String message) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.isOp()) {
+                p.sendMessage(ColorUtils.color("&e&lCASE &6» &7" + message));
+            }
+        }
+    }
+
     public static void logDatabaseMessage(String message) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.isOp()) {

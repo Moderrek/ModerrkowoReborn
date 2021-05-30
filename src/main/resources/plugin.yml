@@ -106,6 +106,12 @@ commands:
     permission: moderr.op
   abank:
     permission: moderr.op
+  acheststorage:
+    permission: moderr.op
+  rynek:
+    aliases: [ah,sklep,sprzedaz]
+  przelej:
+    aliases: [pay,przelew,share]
 permissions:
   moderr.vanish:
     default: op

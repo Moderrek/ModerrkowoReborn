@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import pl.moderr.moderrkowo.reborn.Main;
+import pl.moderr.moderrkowo.reborn.opening.data.UserChestStorage;
 import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
 import pl.moderr.moderrkowo.reborn.utils.Logger;
 import pl.moderr.moderrkowo.reborn.villagers.data.PlayerVillagersData;
@@ -44,7 +45,7 @@ public class UserManager {
         try {
             if (!Main.getMySQL().getQuery().userExists(uuid)) {
                 Main.getMySQL().getQuery().insertUser(uuid, p.getName());
-                u = new User(uuid, 0, 0, new PlayerVillagersData());
+                u = new User(uuid, 0, 0, new PlayerVillagersData(), new UserChestStorage(new HashMap<>()));
                 p.getInventory().addItem(new ItemStack(Material.STONE_AXE));
                 p.getInventory().addItem(new ItemStack(Material.OAK_LOG,2));
                 p.getInventory().addItem(new ItemStack(Material.BREAD, 16));
@@ -52,7 +53,7 @@ public class UserManager {
                 p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
             } else {
                 Main.getMySQL().getQuery().updateLastSeen(uuid);
-                u = new User(uuid, Main.getMySQL().getQuery().getMoney(uuid), Main.getMySQL().getQuery().getExp(uuid), Main.getMySQL().getQuery().getQuestData(uuid));
+                u = new User(uuid, Main.getMySQL().getQuery().getMoney(uuid), Main.getMySQL().getQuery().getExp(uuid), Main.getMySQL().getQuery().getQuestData(uuid), Main.getMySQL().getQuery().getUserChestStorage(uuid));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -84,6 +85,11 @@ public class UserManager {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        try {
+            Main.getMySQL().getQuery().setUserChestStorageData(user.getPlayer().getUniqueId(), user.getUserChestStorage());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
     public static void unloadUser(UUID uuid) {
         if (isUserLoaded(uuid)) {
@@ -100,6 +106,11 @@ public class UserManager {
             }
             try {
                 Main.getMySQL().getQuery().setQuestData(uuid, u.getVillagersData());
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            try {
+                Main.getMySQL().getQuery().setUserChestStorageData(uuid, u.getUserChestStorage());
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
