@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -446,23 +447,23 @@ public class VillagerManager implements Listener {
             }
         }, new ArrayList<VillagerShopItem>() {
             {
-                add(new VillagerShopItem(new ItemStack(Material.FEATHER, 8), 1, 1, "Nie uszkodzone piórko kury", 30, 27));
-                add(new VillagerShopItem(new ItemStack(Material.ROTTEN_FLESH, 8), 1,1, "Mięso potwora", 11, 9));
+                add(new VillagerShopItem(new ItemStack(Material.FEATHER, 8), 1, 1, "Nie uszkodzone piórko kury", 30, 27, false));
+                add(new VillagerShopItem(new ItemStack(Material.ROTTEN_FLESH, 8), 1,1, "Mięso potwora", 11, 9, true));
 
-                add(new VillagerShopItem(new ItemStack(Material.GUNPOWDER, 1), 2,1, "Proch strzelniczy", 90, 38));
-                add(new VillagerShopItem(new ItemStack(Material.POISONOUS_POTATO, 8), 2,1, "Zepsuty ziemniak", 55, 55));
+                add(new VillagerShopItem(new ItemStack(Material.GUNPOWDER, 1), 2,1, "Proch strzelniczy", 90, 38, true));
+                add(new VillagerShopItem(new ItemStack(Material.POISONOUS_POTATO, 8), 2,1, "Zepsuty ziemniak", 55, 55,true));
 
-                add(new VillagerShopItem(new ItemStack(Material.STRING, 4), 3,1, "Jedwabna nitka", 33, 10));
-                add(new VillagerShopItem(new ItemStack(Material.SPIDER_EYE, 5), 3,1, "Oko sześcionoga", 25, 14));
+                add(new VillagerShopItem(new ItemStack(Material.STRING, 4), 3,1, "Jedwabna nitka", 33, 10,true));
+                add(new VillagerShopItem(new ItemStack(Material.SPIDER_EYE, 5), 3,1, "Oko sześcionoga", 25, 14,true));
 
-                add(new VillagerShopItem(new ItemStack(Material.ARROW, 16), 4,1, "Naostrzona kamienna strzała", 100, 25));
-                add(new VillagerShopItem(new ItemStack(Material.BONE, 3), 4,1, "Wapienna kość", 55, 19));
-                add(new VillagerShopItem(new ItemStack(Material.BLAZE_ROD, 1), 4,1, "Kość płomyka", 1220));
+                add(new VillagerShopItem(new ItemStack(Material.ARROW, 16), 4,1, "Naostrzona kamienna strzała", 100, 25,true));
+                add(new VillagerShopItem(new ItemStack(Material.BONE, 3), 4,1, "Wapienna kość", 55, 19, true));
+                add(new VillagerShopItem(new ItemStack(Material.BLAZE_ROD, 1), 4,1, "Kość płomyka", 1220,900, false));
 
-                add(new VillagerShopItem(new ItemStack(Material.SLIME_BALL), 5,1, "Kleista maź", 275, 99));
-                add(new VillagerShopItem(new ItemStack(Material.RABBIT_FOOT, 2), 5,1, "Noga rzadkiego królika", 120, 70));
+                add(new VillagerShopItem(new ItemStack(Material.SLIME_BALL), 5,1, "Kleista maź", 275, 99, true));
+                add(new VillagerShopItem(new ItemStack(Material.RABBIT_FOOT, 2), 5,1, "Noga rzadkiego królika", 120, 70, true));
 
-                add(new VillagerShopItem(new ItemStack(Material.FERMENTED_SPIDER_EYE), 6,1, "Fermentowane oko pająka", 75, 48));
+                add(new VillagerShopItem(new ItemStack(Material.FERMENTED_SPIDER_EYE), 6,1, "Fermentowane oko pająka", 75, 48, true));
 
                 add(new VillagerShopItem(new ItemStack(Material.SHIELD), 7, 4, "Tarcza Łowcy", 1000));
             }
@@ -600,7 +601,7 @@ public class VillagerManager implements Listener {
                         });
                     }
                 }));
-                add(new Quest("Buraki cukrowe", "Mam dobre kontrakty,\nale potrzebuje pomocnika.\nPodzielimy się?", QuestDifficulty.NORMAL, new ArrayList<IQuestItem>(){
+                add(new Quest("Buraki cukrowe", "Mam dobre kontrakty,\nale potrzebuje pomocnika.\nPodzielimy się?", QuestDifficulty.HARD, new ArrayList<IQuestItem>(){
                     {
                         add(new IQuestItemCollect() {
                             @Override
@@ -690,6 +691,43 @@ public class VillagerManager implements Listener {
                         });
                     }
                 }));
+                add(new Quest("Pszenica", "", QuestDifficulty.NORMAL, new ArrayList<IQuestItem>(){
+                    {
+                        add(new IQuestItemCollect() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.WHEAT_SEEDS;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 128;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "1";
+                            }
+                        });
+                    }
+                }, new ArrayList<IQuestReward>(){
+                    {
+                        add((IQuestRewardMoney) () -> 1550);
+                        add((IQuestRewardExp) () -> 22);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
+                    }
+                }));
                 add(new Quest("Trzcina", "Dostałęm zlecenie na\ntwórstwo papieru", QuestDifficulty.NORMAL, new ArrayList<IQuestItem>(){
                     {
                         add(new IQuestItemGive() {
@@ -727,21 +765,251 @@ public class VillagerManager implements Listener {
                         });
                     }
                 }));
+                add(new Quest("Pustynia", "", QuestDifficulty.HARD, new ArrayList<IQuestItem>(){
+                    {
+                        add(new IQuestItemBreak() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.CACTUS;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 32;
+                            }
+
+                            @Override
+                            public boolean blockSilk() {
+                                return false;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "1";
+                            }
+                        });
+                        add(new IQuestItemGive() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.CACTUS;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 128;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "2";
+                            }
+                        });
+                        add(new IQuestItemGive() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.SAND;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 256;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "3";
+                            }
+                        });
+                    }
+                }, new ArrayList<IQuestReward>(){
+                    {
+                        add((IQuestRewardMoney) () -> 15550);
+                        add((IQuestRewardExp) () -> 32);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA x10";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(10, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(10, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
+                    }
+                }));
+                add(new Quest("Vines", "", QuestDifficulty.HARD, new ArrayList<IQuestItem>(){
+                    {
+                        add(new IQuestItemBreak() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.VINE;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 32;
+                            }
+
+                            @Override
+                            public boolean blockSilk() {
+                                return false;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "1";
+                            }
+                        });
+                        add(new IQuestItemGive() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.VINE;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 32;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "2";
+                            }
+                        });
+                        add(new IQuestItemGive() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.JUNGLE_LOG;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 128;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "3";
+                            }
+                        });
+                    }
+                }, new ArrayList<IQuestReward>(){
+                    {
+                        add((IQuestRewardMoney) () -> 8000);
+                        add((IQuestRewardExp) () -> 52);
+                        add(new IQuestRewardCustom() {
+                            @Override
+                            public String label() {
+                                return "Skrzynia ZWYKŁA";
+                            }
+
+                            @Override
+                            public void Action(Player p, User u) {
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);
+                                u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
+                            }
+                        });
+                    }
+                }));
+                add(new Quest("Egzotyka", "", QuestDifficulty.HARD, new ArrayList<IQuestItem>(){
+                    {
+                        add(new IQuestItemBreak() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.MELON;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 96;
+                            }
+
+                            @Override
+                            public boolean blockSilk() {
+                                return false;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "1";
+                            }
+                        });
+                        add(new IQuestItemGive() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.COCOA_BEANS;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 128;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "2";
+                            }
+                        });
+                        add(new IQuestItemPay() {
+                            @Override
+                            public int getCount() {
+                                return 30000;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "3";
+                            }
+                        });
+                        add(new IQuestItemCraft() {
+                            @Override
+                            public Material getMaterial() {
+                                return Material.COOKIE;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return 2000;
+                            }
+
+                            @Override
+                            public String getQuestItemDataId() {
+                                return "4";
+                            }
+                        });
+                    }
+                }, new ArrayList<IQuestReward>(){
+                    {
+                        add((IQuestRewardMoney) () -> 75000);
+                        add((IQuestRewardExp) () -> 122);
+                    }
+                }));
             }
         }, new ArrayList<VillagerShopItem>(){
             {
-                add(new VillagerShopItem(new ItemStack(Material.WHEAT,16), 1, 1,"Pospolita roślina", 60, 9));
-                add(new VillagerShopItem(new ItemStack(Material.WHEAT_SEEDS, 8), 1, 1,"Nasiona pospolitej rośliny", 12,3));
-                add(new VillagerShopItem(new ItemStack(Material.BEETROOT_SEEDS, 16), 3,3, "Nasiona buraka", 96, 8));
-                add(new VillagerShopItem(new ItemStack(Material.BEETROOT, 16), 4, 4, "Sprzedaje na kontrakcie", 180,45));
-                add(new VillagerShopItem(new ItemStack(Material.CARROT,32), 4, 3,"Umyta marchewka", 500, 125));
-                add(new VillagerShopItem(new ItemStack(Material.SUGAR_CANE, 24), 5, 1, "Nadaje się do papieru", 1000,50));
-                add(new VillagerShopItem(new ItemStack(Material.MELON_SLICE, 16), 6, 4, "?", 384, 96));
+                add(new VillagerShopItem(new ItemStack(Material.WHEAT,16), 1, 1,"Pospolita roślina", 60, 9, true));
+                add(new VillagerShopItem(new ItemStack(Material.WHEAT_SEEDS, 8), 1, 1,"Nasiona pospolitej rośliny", 12,3, false));
+                add(new VillagerShopItem(new ItemStack(Material.BEETROOT_SEEDS, 16), 3,3, "Nasiona buraka", 96, 8, false));
+                add(new VillagerShopItem(new ItemStack(Material.BEETROOT, 16), 4, 4, "Sprzedaje na kontrakcie", 180,45, true));
+                add(new VillagerShopItem(new ItemStack(Material.CARROT,32), 4, 3,"Umyta marchewka", 500, 125, true));
+                add(new VillagerShopItem(new ItemStack(Material.SUGAR_CANE, 24), 5, 1, "Nadaje się do papieru", 1000,50, true));
+                add(new VillagerShopItem(new ItemStack(Material.CACTUS, 32), 6,1, "Kaktus", 896,224, true));
+                add(new VillagerShopItem(new ItemStack(Material.VINE, 16), 7,1, "", 704,176, true));
+                add(new VillagerShopItem(new ItemStack(Material.COCOA_BEANS, 64), 8,5, "Kakao", 32000,3200, false));
+                add(new VillagerShopItem(new ItemStack(Material.MELON_SLICE, 16), 8, 4, "", 2384, 288, false));
+                add(new VillagerShopItem(new ItemStack(Material.COOKIE,64),8,6,"",15872,1984,false));
             }
         }));
         AddVillager(new VillagerData("Handlarz", new ArrayList<>(), new ArrayList<VillagerShopItem>(){
             {
                 add(new VillagerShopItem(CuboidsManager.getCuboidItem(1), 0,1,"Zakup swoją działkę!",8000));
+                add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.CHEST,1,ColorUtils.color("&7Skrzynia &a&lZWYKŁA")), 0,0, "Kup skrzynie do otwierania", 400, VillagerShopItemCustomType.CHESTZWYKLA));
+                add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.TRIPWIRE_HOOK,1,ColorUtils.color("&7Klucz &a&lZWYKŁA")), 0,0, "Kup klucz do otwierania", 1250, VillagerShopItemCustomType.KEYZWYKLA));
+
+                add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.ENDER_CHEST,1,ColorUtils.color("&7Skrzynia &d&lDNIA DZIECKA")), 0,0, "Kup skrzynie do otwierania", 3500, VillagerShopItemCustomType.CHESTDNIADZIECKA));
+                add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.TRIPWIRE_HOOK,1,ColorUtils.color("&7Klucz &d&lDNIA DZIECKA")), 0,0, "Kup klucz do otwierania", 9550, VillagerShopItemCustomType.KEYDNIADZIECKA));
             }
         }));
         AddVillager(new VillagerData("Rybak", new ArrayList<Quest>(){
@@ -921,7 +1189,7 @@ public class VillagerManager implements Listener {
             }
         }, new ArrayList<VillagerShopItem>(){
             {
-                add(new VillagerShopItem(new ItemStack(Material.STRING, 4),0,0,"",0,10));
+                add(new VillagerShopItem(new ItemStack(Material.STRING, 4),0,0,"",0,10, true));
             }
         }));
         //</editor-fold> Villagers
@@ -989,6 +1257,11 @@ public class VillagerManager implements Listener {
         ArrayList<String> lore = new ArrayList<>();
         if (unlocked) {
             //lore.add(ColorUtils.color("&eOpis"));
+            if(item.isBoostedSell()){
+                lore.add(ColorUtils.color("&a⬆ &9Wzmocniona sprzedaż &a⬆"));
+                meta.addEnchant(Enchantment.DURABILITY,1,true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
             lore.add(ColorUtils.color(ColorUtils.color("&8" + item.getDescription())));
             lore.add(" ");
             if (item.canSell()) {
@@ -1000,9 +1273,17 @@ public class VillagerManager implements Listener {
                     }
                 }
                 if(ItemStackUtils.getCountOfMaterial(u.getPlayer(), item.getItem().getType()) >= item.getItem().getAmount()){
-                    lore.add(ColorUtils.color("&7Cena sprzedaży: &a" + ChatUtil.getMoney(item.getSellCost())));
+                    if(item.isBoostedSell()){
+                        lore.add(ColorUtils.color("&7Cena sprzedaży: &8&n&m" + ChatUtil.getMoney(item.getSellCost()) + "&a " + item.getFinalCost() + " &a⬆"));
+                    }else{
+                        lore.add(ColorUtils.color("&7Cena sprzedaży: &a" + ChatUtil.getMoney(item.getFinalCost())));
+                    }
                 }else{
-                    lore.add(ColorUtils.color("&7Cena sprzedaży: &c" + ChatUtil.getMoney(item.getSellCost())));
+                    if(item.isBoostedSell()){
+                        lore.add(ColorUtils.color("&7Cena sprzedaży: &8&n&m" + ChatUtil.getMoney(item.getSellCost()) + "&c " + item.getFinalCost() + " &a⬆"));
+                    }else{
+                        lore.add(ColorUtils.color("&7Cena sprzedaży: &c" + ChatUtil.getMoney(item.getFinalCost())));
+                    }
                 }
             } else {
                 if (item.getCost() <= u.getMoney()) {
@@ -1367,11 +1648,7 @@ public class VillagerManager implements Listener {
                                 u.subtractMoney(shopItem.getCost());
                                 //p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &c- " + ChatUtil.getMoney(shopItem.getCost())));
                                 //p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &a+ " + ChatUtil.materialName(shopItem.getItem().getType()) + " x" + shopItem.getItem().getAmount()));
-                                if (p.getInventory().firstEmpty() != -1) {
-                                    p.getInventory().addItem(shopItem.getItem().clone());
-                                } else {
-                                    p.getWorld().dropItem(p.getLocation(), shopItem.getItem().clone());
-                                }
+                                shopItem.onBuy(p);
                                 p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                                 ModerrkowoLog.LogAdmin(ColorUtils.color("&6" + p.getName() + " &7zakupił &6" + ChatUtil.materialName(shopItem.getItem().getType()) + " &7od " + villagerData.getName()));
                             } else {
@@ -1390,9 +1667,9 @@ public class VillagerManager implements Listener {
                             if (unlocked) {
                                 if (ItemStackUtils.getCountOfMaterial(p, shopItem.getItem().getType()) >= shopItem.getItem().getAmount()) {
                                     ItemStackUtils.consumeItem(p, shopItem.getItem().getAmount(), shopItem.getItem().getType());
-                                    u.addMoney(shopItem.getSellCost());
+                                    u.addMoney(shopItem.getFinalCost());
                                     p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &c- " + ChatUtil.materialName(shopItem.getItem().getType()) + " x" + shopItem.getItem().getAmount()));
-                                    p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &a+ " + ChatUtil.getMoney(shopItem.getSellCost())));
+                                    p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &a+ " + ChatUtil.getMoney(shopItem.getFinalCost())));
                                     p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
                                     ModerrkowoLog.LogAdmin(ColorUtils.color("&6" + p.getName() + " &7sprzedał &6" + ChatUtil.materialName(shopItem.getItem().getType()) + " &7do " + villagerData.getName()));
                                 } else {
@@ -1474,6 +1751,8 @@ public class VillagerManager implements Listener {
                         int haveItem = 0;
                         for (IQuestItem item : activeQuest.getQuestItems()) {
                             if (item instanceof IQuestItemGive) {
+
+                                /*
                                 IQuestItemGive itemGive = (IQuestItemGive) item;
                                 int items = data.getQuestItemData().get(item.getQuestItemDataId());
                                 int temp = items;
@@ -1496,7 +1775,31 @@ public class VillagerManager implements Listener {
                                         haveItem++;
                                     }
                                     u.UpdateScoreboard();
+                                }*/
+                                IQuestItemGive itemGive = (IQuestItemGive) item;
+                                int ileJuzWplacil = data.getQuestItemData().get(item.getQuestItemDataId());
+                                int ileJestPotrzebne = itemGive.getCount();
+                                int ileMa = ItemStackUtils.getCountOfMaterial(p, itemGive.getMaterial());
+                                int ileBrakuje = ileJestPotrzebne - ileJuzWplacil;
+                                if(ileJuzWplacil == ileJestPotrzebne){
+                                    // jezeli nic nie brakuje do zaplaty
+                                    haveItem++;
+                                }else{
+                                    // jezeli cos brakuje do zaplaty
+                                    // zabiera mu pieniadze tyle ile moze i sprawdza czy brakuje nadal
+                                    if(ileBrakuje > ileMa){
+                                        ItemStackUtils.consumeItem(p, ileMa, itemGive.getMaterial());
+                                        data.getQuestItemData().replace(item.getQuestItemDataId(), ileJuzWplacil, ileJuzWplacil+ileMa);
+                                        p.sendMessage(ColorUtils.color("&cPrzyniesiono " + ileMa + " ale brakuje jeszcze " + (ileJestPotrzebne-ileJuzWplacil-ileMa) + "x " + ChatUtil.materialName(itemGive.getMaterial())));
+                                        // wplacil tyle ile moze
+                                    }else{
+                                        ItemStackUtils.consumeItem(p, ileBrakuje, itemGive.getMaterial());
+                                        data.getQuestItemData().replace(item.getQuestItemDataId(), ileJuzWplacil, ileJuzWplacil+ileBrakuje);
+                                        // wplacil calosc
+                                        haveItem++;
+                                    }
                                 }
+                                u.UpdateScoreboard();
                             }
                             if(item instanceof IQuestItemPay){
                                 IQuestItemPay itemGive = (IQuestItemPay) item;

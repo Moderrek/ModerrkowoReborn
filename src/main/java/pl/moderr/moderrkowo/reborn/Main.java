@@ -1,16 +1,17 @@
 package pl.moderr.moderrkowo.reborn;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Statistic;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.*;
 import org.jetbrains.annotations.Contract;
 import pl.moderr.moderrkowo.reborn.antylogout.AntyLogoutManager;
 import pl.moderr.moderrkowo.reborn.automessage.ModerrkowoAutoMessage;
-import pl.moderr.moderrkowo.reborn.commands.user.RankingCommand;
 import pl.moderr.moderrkowo.reborn.commands.admin.*;
+import pl.moderr.moderrkowo.reborn.commands.user.RankingCommand;
 import pl.moderr.moderrkowo.reborn.commands.user.information.CraftingDzialkaCommand;
 import pl.moderr.moderrkowo.reborn.commands.user.information.DiscordCommand;
 import pl.moderr.moderrkowo.reborn.commands.user.information.RegulaminCommand;
@@ -21,18 +22,15 @@ import pl.moderr.moderrkowo.reborn.commands.user.teleportation.*;
 import pl.moderr.moderrkowo.reborn.commands.user.weather.PogodaCommand;
 import pl.moderr.moderrkowo.reborn.cuboids.CuboidsManager;
 import pl.moderr.moderrkowo.reborn.economy.*;
+import pl.moderr.moderrkowo.reborn.events.EventManager;
 import pl.moderr.moderrkowo.reborn.listeners.*;
 import pl.moderr.moderrkowo.reborn.mysql.MySQL;
-import pl.moderr.moderrkowo.reborn.mysql.User;
-import pl.moderr.moderrkowo.reborn.mysql.UserManager;
 import pl.moderr.moderrkowo.reborn.opening.OpeningManager;
 import pl.moderr.moderrkowo.reborn.timevoter.TimeVoter;
-import pl.moderr.moderrkowo.reborn.utils.ChatUtil;
 import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
 import pl.moderr.moderrkowo.reborn.utils.HexResolver;
 import pl.moderr.moderrkowo.reborn.utils.Logger;
 import pl.moderr.moderrkowo.reborn.villagers.VillagerManager;
-import pl.moderr.moderrkowo.reborn.villagers.data.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +54,7 @@ public final class Main extends JavaPlugin {
     public ModerrkowoAutoMessage autoMessage;
     private static MySQL mySQL;
     public RynekManager instanceRynekManager;
+    public EventManager eventManager;
 
     @Contract(pure = true)
     public static Main getInstance() {
@@ -91,9 +90,24 @@ public final class Main extends JavaPlugin {
         cuboidsManager.Start();
         initializeMySQL();
         instanceRynekManager = new RynekManager();
+        eventManager = new EventManager();
+        eventLoop();
         Bukkit.getPluginManager().registerEvents(instanceRynekManager, this);
         Logger.logPluginMessage("Wczytano działki");
         Logger.logPluginMessage("Wczytano plugin w &8(&a" + (System.currentTimeMillis() - start) + "ms&8)");
+    }
+
+    private void eventLoop() {
+        BossBar bossBar = Bukkit.createBossBar(ColorUtils.color("&eTrwa wydarzenie"), BarColor.RED, BarStyle.SOLID);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            Bukkit.getOnlinePlayers().forEach(bossBar::addPlayer);
+            Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+                @Override
+                public void run() {
+                    bossBar.getPlayers().forEach(bossBar::removePlayer);
+                }
+            }, 60);
+        }, 0,20*60*15);
     }
 
     private void initializeMySQL() {
@@ -212,10 +226,10 @@ public final class Main extends JavaPlugin {
     public void initializeAutoMessage() {
         autoMessage = new ModerrkowoAutoMessage(this, 60 * 5, new ArrayList<String>() {
             {
-                add("Aby zdobyć unikatowe przedmioty w &cnetherze &elub &dendzie &ebędziesz musiał kupić przepustke na spawnie!");
+                add("Aby zdobyć &6unikatowe przedmioty w &cnetherze &flub &dendzie &fbędziesz musiał zdobyć przepustke!");
                 add("Na tym serwerze umożliwiamy prostą prośbę o teleportacje! &6/tpr <nick>");
                 add("Jeżeli zobaczysz jakiś błąd zgłoś! &6/helpop");
-                add("Nie wiesz jak zarobić? Wpisz &6/sprzedaz &etam sprzedasz swoje przedmioty!");
+                add("Nie wiesz jak zarobić? Wpisz &6/sprzedaz &ftam sprzedasz swoje przedmioty!");
                 add("Możesz wypłacić pieniądze komendą &6/wyplac <kwota>");
                 add("Znasz serwerowe zasady? &6/regulamin");
                 add("Sklepy znajdują się na spawnie! &6/spawn");
@@ -224,8 +238,8 @@ public final class Main extends JavaPlugin {
                 add("Chcesz swojego cuboida? &6/craftingdzialka");
                 add("Aby chronić swoje dobytki stwórz działke!");
                 add("Jeżeli nie wiesz co się zmieniło &6/zmiany");
-                add("Dołącz na naszego &9&lDISCORD&e'a! &6/discord");
-                add("Chcesz zobaczyć &6swoją&e pozycje w rankingu? &6/ranking");
+                add("Dołącz na naszego &9&lDISCORD&f'a! &6/discord");
+                add("Chcesz zobaczyć &6swoją&f pozycje w rankingu? &6/ranking");
                 add("Jeżeli jest brzydka pogoda wpisz &6/pogoda");
                 add("Możesz wypłacić pieniądze do banknotu! &6/wyplac");
             }

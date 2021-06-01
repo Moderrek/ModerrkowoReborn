@@ -57,9 +57,6 @@ public class OpeningManager implements Listener {
         inv.setItem(31, ItemStackUtils.createGuiItem(Material.ENDER_CHEST, 1,
                 ColorUtils.color("   &7Skrzynia " + chest2.name() + "   "),
                 ColorUtils.color(" "),
-                ColorUtils.color("   &7Skrzynka będzie aktywna tylko"),
-                ColorUtils.color("   &7        1 CZERWCA"),
-                ColorUtils.color(" "),
                 ColorUtils.color("   &7Posiadasz: &6" + u.getUserChestStorage().getAmountOfItem(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.DNIADZIECKA)) + "   "),
                 ColorUtils.color("   &7Klucze: &6" + u.getUserChestStorage().getAmountOfItem(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.DNIADZIECKA)) + "   "),
                 ColorUtils.color(" "),
@@ -73,7 +70,7 @@ public class OpeningManager implements Listener {
 
     public void OpenCase(Player p, ModerrCase chest){
         Inventory inv = Bukkit.createInventory(null, 27, ColorUtils.color("&7Skrzynia " + chest.name()));
-        for (int i = 0; i != 26; i++) {
+        for (int i = 0; i != 27; i++) {
             inv.setItem(i, ItemStackUtils.createGuiItem(Material.BLACK_STAINED_GLASS_PANE, 1, " "));
         }
         inv.setItem(4, ItemStackUtils.createGuiItem(Material.LIME_STAINED_GLASS_PANE, 1, " "));
@@ -146,7 +143,7 @@ public class OpeningManager implements Listener {
     }
 
     public void anim(Player p, Inventory inv, ArrayList<ModerrCaseItemTemp> rewards, int offset){
-        for(int i = 10; i != 16; i++){
+        for(int i = 10; i != 17; i++){
             String color = "";
             ModerrCaseItemTemp item = rewards.get((i-10)+offset);
             switch (item.rarity()){
@@ -201,6 +198,17 @@ public class OpeningManager implements Listener {
                     OpenCase((Player) e.getWhoClicked(), ModerrCaseConstants.getCase(ModerrCaseEnum.ZWYKLA));
                     u.getUserChestStorage().subtractChest(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), 1);
                     u.getUserChestStorage().subtractKey(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.ZWYKLA), 1);
+                }else{
+                    e.getWhoClicked().sendMessage(ColorUtils.color("&8[!] &cNie posiadasz potrzebnych przedmiotów"));
+                    e.getWhoClicked().sendMessage(ColorUtils.color("&8[!] &eAby otworzyć skrzynke potrzebna jest skrzynia i klucz"));
+                }
+                return;
+            }
+            if(e.getSlot() == 31){
+                if(u.getUserChestStorage().hasItem(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.DNIADZIECKA), 1) && u.getUserChestStorage().hasItem(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.DNIADZIECKA), 1)){
+                    OpenCase((Player) e.getWhoClicked(), ModerrCaseConstants.getCase(ModerrCaseEnum.DNIADZIECKA));
+                    u.getUserChestStorage().subtractChest(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.DNIADZIECKA), 1);
+                    u.getUserChestStorage().subtractKey(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.DNIADZIECKA), 1);
                 }else{
                     e.getWhoClicked().sendMessage(ColorUtils.color("&8[!] &cNie posiadasz potrzebnych przedmiotów"));
                     e.getWhoClicked().sendMessage(ColorUtils.color("&8[!] &eAby otworzyć skrzynke potrzebna jest skrzynia i klucz"));

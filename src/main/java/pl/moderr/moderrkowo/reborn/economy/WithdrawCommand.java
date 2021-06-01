@@ -85,6 +85,9 @@ public class WithdrawCommand implements CommandExecutor, Listener {
     public ItemStack generateItem(int count, int money) {
         return ItemStackUtils.createGuiItem(Material.PAPER, count, banknotPrefix + money + banknotSuffix);
     }
+    public static ItemStack generateItemStatic(int count, int money) {
+        return ItemStackUtils.createGuiItem(Material.PAPER, count, ColorUtils.color("&aNominał &2") + money + ColorUtils.color(" zł"));
+    }
 
     /**
      * Konwertowanie {@link ItemStack Banknot} na wartość banknota

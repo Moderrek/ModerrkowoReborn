@@ -2,6 +2,8 @@ package pl.moderr.moderrkowo.reborn.opening;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import pl.moderr.moderrkowo.reborn.Main;
+import pl.moderr.moderrkowo.reborn.economy.WithdrawCommand;
 import pl.moderr.moderrkowo.reborn.opening.data.*;
 import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
 import pl.moderr.moderrkowo.reborn.utils.Logger;
@@ -36,29 +38,24 @@ public class ModerrCaseConstants {
             public WeightedList<ModerrCaseItem> randomList() {
                 return new WeightedList<ModerrCaseItem>() {
                     {
-                        put(new ModerrCaseItem(new ItemStack(Material.ACACIA_SAPLING,8), ModerrCaseItemRarity.POSPOLITE), 60);
-                        put(new ModerrCaseItem(new ItemStack(Material.OAK_WOOD,64), ModerrCaseItemRarity.POSPOLITE), 60);
-                        put(new ModerrCaseItem(new ItemStack(Material.COOKED_BEEF,64), ModerrCaseItemRarity.POSPOLITE), 60);
-                        put(new ModerrCaseItem(new ItemStack(Material.IRON_INGOT,32), ModerrCaseItemRarity.POSPOLITE), 55);
-                        put(new ModerrCaseItem(new ItemStack(Material.SUGAR_CANE,64), ModerrCaseItemRarity.POSPOLITE), 55);
-                        put(new ModerrCaseItem(new ItemStack(Material.EMERALD,20), ModerrCaseItemRarity.POSPOLITE), 55);
-
+                        put(new ModerrCaseItem(new ItemStack(Material.ACACIA_SAPLING,8), ModerrCaseItemRarity.POSPOLITE), 70);
+                        put(new ModerrCaseItem(new ItemStack(Material.OAK_WOOD,64), ModerrCaseItemRarity.POSPOLITE), 70);
+                        put(new ModerrCaseItem(new ItemStack(Material.COOKED_BEEF,16), ModerrCaseItemRarity.POSPOLITE), 70);
+                        put(new ModerrCaseItem(new ItemStack(Material.IRON_INGOT,32), ModerrCaseItemRarity.POSPOLITE), 70);
+                        put(new ModerrCaseItem(new ItemStack(Material.SUGAR_CANE,48), ModerrCaseItemRarity.POSPOLITE), 70);
+                        put(new ModerrCaseItem(new ItemStack(Material.EMERALD,20), ModerrCaseItemRarity.POSPOLITE), 70);
                         put(new ModerrCaseItem(new ItemStack(Material.ENDER_PEARL,8), ModerrCaseItemRarity.RZADKIE), 25);
                         put(new ModerrCaseItem(new ItemStack(Material.ENCHANTING_TABLE,1), ModerrCaseItemRarity.RZADKIE), 25);
-                        put(new ModerrCaseItem(new ItemStack(Material.BLAZE_ROD,2), ModerrCaseItemRarity.RZADKIE), 30);
-
+                        put(new ModerrCaseItem(new ItemStack(Material.BLAZE_ROD,2), ModerrCaseItemRarity.RZADKIE), 25);
                         put(new ModerrCaseItem(new ItemStack(Material.HOPPER,1), ModerrCaseItemRarity.RZADKIE), 15);
                         put(new ModerrCaseRandomEnchantment(ModerrCaseItemRarity.RZADKIE), 25);
-                        put(new ModerrCaseItem(new ItemStack(Material.SLIME_BALL,16), ModerrCaseItemRarity.RZADKIE), 16);
+                        put(new ModerrCaseItem(new ItemStack(Material.SLIME_BALL,16), ModerrCaseItemRarity.RZADKIE), 20);
                         put(new ModerrCaseRandomDisc(ModerrCaseItemRarity.RZADKIE), 15);
-
                         put(new ModerrCaseRandomTool(ModerrCaseItemRarity.LEGENDARNE),10);
                         put(new ModerrCaseItem(new ItemStack(Material.OBSERVER,1), ModerrCaseItemRarity.LEGENDARNE), 10);
-                        put(new ModerrCaseItem(new ItemStack(Material.GOLDEN_APPLE,2), ModerrCaseItemRarity.LEGENDARNE), 3);
-                        put(new ModerrCaseItem(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE,1), ModerrCaseItemRarity.LEGENDARNE), 2);
-                        put(new ModerrCaseItem(new ItemStack(Material.TOTEM_OF_UNDYING,1), ModerrCaseItemRarity.LEGENDARNE), 2);
-                        put(new ModerrCaseItem(new ItemStack(Material.NETHERITE_SCRAP,1), ModerrCaseItemRarity.MITYCZNE), 1);
-                        put(new ModerrCaseItem(new ItemStack(Material.TRIDENT,1), ModerrCaseItemRarity.MITYCZNE), 1);
+                        put(new ModerrCaseItem(new ItemStack(Material.GOLDEN_APPLE,2), ModerrCaseItemRarity.LEGENDARNE), 10);
+                        put(new ModerrCaseItem(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE,1), ModerrCaseItemRarity.MITYCZNE), 1);
+                        put(new ModerrCaseItem(new ItemStack(Material.TOTEM_OF_UNDYING,1), ModerrCaseItemRarity.MITYCZNE), 1);
                     }
                 };
             }
@@ -83,7 +80,24 @@ public class ModerrCaseConstants {
             public WeightedList<ModerrCaseItem> randomList() {
                 return new WeightedList<ModerrCaseItem>(){
                     {
-                        put(new ModerrCaseItem(new ItemStack(Material.DIRT,16), ModerrCaseItemRarity.POSPOLITE),100);
+                        put(new ModerrCaseItem(WithdrawCommand.generateItemStatic(1,12500), ModerrCaseItemRarity.POSPOLITE), 7);
+                        put(new ModerrCaseItem(WithdrawCommand.generateItemStatic(1,9000), ModerrCaseItemRarity.POSPOLITE), 7);
+                        put(new ModerrCaseItem(WithdrawCommand.generateItemStatic(1,15000), ModerrCaseItemRarity.POSPOLITE), 30);
+                        put(new ModerrCaseItem(WithdrawCommand.generateItemStatic(1,5000), ModerrCaseItemRarity.POSPOLITE), 7);
+                        put(new ModerrCaseItem(new ItemStack(Material.SLIME_BALL,64), ModerrCaseItemRarity.RZADKIE), 13);
+                        put(new ModerrCaseItem(new ItemStack(Material.GOLDEN_APPLE,16), ModerrCaseItemRarity.RZADKIE), 30);
+                        put(new ModerrCaseItem(new ItemStack(Material.BLAZE_ROD,16), ModerrCaseItemRarity.RZADKIE), 40);
+                        put(new ModerrCaseRandomPotion(ModerrCaseItemRarity.LEGENDARNE), 40);
+                        put(new ModerrCaseRandomToolPerfect(ModerrCaseItemRarity.LEGENDARNE),30);
+                        put(new ModerrCaseItem(new ItemStack(Material.NETHER_QUARTZ_ORE,16), ModerrCaseItemRarity.LEGENDARNE), 10);
+                        put(new ModerrCaseRandomEnchantmentPerfect(ModerrCaseItemRarity.RZADKIE),30);
+                        put(new ModerrCaseItem(new ItemStack(Material.FERMENTED_SPIDER_EYE,64), ModerrCaseItemRarity.LEGENDARNE), 20);
+                        put(new ModerrCaseItem(new ItemStack(Material.NETHER_BRICK,32), ModerrCaseItemRarity.LEGENDARNE), 20);
+
+                        put(new ModerrCaseItem(new ItemStack(Material.SOUL_SAND,1), ModerrCaseItemRarity.MITYCZNE), 5);
+                        put(new ModerrCaseItem(new ItemStack(Material.NETHER_WART,1), ModerrCaseItemRarity.MITYCZNE), 1);
+                        put(new ModerrCaseItem(new ItemStack(Material.WITHER_SKELETON_SKULL,1), ModerrCaseItemRarity.MITYCZNE), 2);
+                        put(new ModerrCaseItem(new ItemStack(Material.NETHERITE_SCRAP,1), ModerrCaseItemRarity.MITYCZNE), 1);
                     }
                 };
             }

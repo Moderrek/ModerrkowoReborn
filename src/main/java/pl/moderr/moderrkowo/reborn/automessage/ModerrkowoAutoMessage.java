@@ -15,7 +15,7 @@ public class ModerrkowoAutoMessage {
                 return;
             }
             Bukkit.broadcastMessage(" ");
-            Bukkit.broadcastMessage(ColorUtils.color("&8[&7*&8] &e" + messages.get(RandomUtils.getRandomInt(0, messages.size() - 1))));
+            Bukkit.broadcastMessage(ColorUtils.color("&8[&7!&8] &f" + messages.get(RandomUtils.getRandomInt(0, messages.size() - 1))));
             Bukkit.broadcastMessage(" ");
         }, 0, 20L * secs);
     }
