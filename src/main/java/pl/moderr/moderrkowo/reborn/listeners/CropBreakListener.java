@@ -1,5 +1,11 @@
 package pl.moderr.moderrkowo.reborn.listeners;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -7,7 +13,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,20 +25,128 @@ import org.bukkit.inventory.ItemStack;
 import pl.moderr.moderrkowo.reborn.Main;
 import pl.moderr.moderrkowo.reborn.mysql.User;
 import pl.moderr.moderrkowo.reborn.mysql.UserManager;
-import pl.moderr.moderrkowo.reborn.utils.ChatUtil;
-import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
-import pl.moderr.moderrkowo.reborn.utils.ItemStackUtils;
-import pl.moderr.moderrkowo.reborn.utils.Logger;
+import pl.moderr.moderrkowo.reborn.utils.*;
 import pl.moderr.moderrkowo.reborn.villagers.data.*;
 
 import java.time.Instant;
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
+import static org.bukkit.Material.*;
 
 public class CropBreakListener implements Listener {
 
     private final Map<Player, Instant> cropMessage = new IdentityHashMap<>();
+
+    public static BlockFace getBlockFace(Player player) {
+        List<Block> lastTwoTargetBlocks = player.getLastTwoTargetBlocks(null, 16);
+        if (lastTwoTargetBlocks.size() != 2 || !lastTwoTargetBlocks.get(1).getType().isOccluding()) return null;
+        Block targetBlock = lastTwoTargetBlocks.get(1);
+        Block adjacentBlock = lastTwoTargetBlocks.get(0);
+        return targetBlock.getFace(adjacentBlock);
+    }
+
+    public boolean inRegion(Location loc, UUID uuid) {
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(loc.getWorld()));
+        if (regions == null) {
+            return false;
+        }
+        ApplicableRegionSet set = regions.getApplicableRegions(BukkitAdapter.asBlockVector(loc));
+        for (ProtectedRegion region : set.getRegions()) {
+            if (region.getOwners().contains(uuid) || region.getMembers().contains(uuid)) {
+                return false;
+            }
+        }
+        return set.size() > 0;
+    }
+
+    /*@EventHandler
+    public void anvil(PrepareAnvilEvent e){
+        ItemStack first = e.getInventory().getFirstItem();
+        ItemStack second = e.getInventory().getSecondItem();
+        if(first == null || second == null){
+            return;
+        }
+        if(first.getType().equals(Material.WOODEN_PICKAXE) || first.getType().equals(Material.STONE_PICKAXE) || first.getType().equals(Material.IRON_PICKAXE) || first.getType().equals(Material.DIAMOND_PICKAXE) || first.getType().equals(Material.NETHERITE_PICKAXE)){
+            if(e.getInventory().getResult() == null) {
+                if(second.getType().equals(Material.ENCHANTED_BOOK)){
+                    EnchantmentStorageMeta book = (EnchantmentStorageMeta) second.getItemMeta();
+                    if(book.hasStoredEnchant(Main.getInstance().hammerEnchantment)){
+                        e.getInventory().setRepairCost(first.getRepairCost());
+                        ItemStack result = new ItemStack(first.getType(), first.getAmount());
+                        HashMap<Enchantment, Integer> enchantments = new HashMap<>();
+                        for(Enchantment ench : first.getEnchantments().keySet()){
+                            enchantments.put(ench, first.getEnchantments().get(ench));
+                        }
+                        for(Enchantment ench : book.getStoredEnchants().keySet()){
+                            int level = book.getStoredEnchants().get(ench);
+                            if(enchantments.containsKey(ench)) {
+                                if(level == enchantments.get(ench)){
+                                    if(enchantments.get(ench)+1 <= ench.getMaxLevel()){
+                                        enchantments.replace(ench, enchantments.get(ench)+1);
+                                    }
+                                }
+                            }else {
+                                enchantments.put(ench, level);
+                            }
+                        }
+                        for(Enchantment ench : enchantments.keySet()){
+                            int level = enchantments.get(ench);
+                            if(!ench.canEnchantItem(result)){
+                                continue;
+                            }
+                            result = ItemStackUtils.addEnchantment(result, ench, level);
+                            e.getInventory().setRepairCost(e.getInventory().getRepairCost()+(2*level));
+                        }
+                        e.setResult(result);
+                    }
+                }
+            }
+        }
+    }*/
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBreak(BlockBreakEvent e) {
+        if (e.isCancelled()) {
+            return;
+        }
+        if (!e.getPlayer().getInventory().getItemInMainHand().getType().equals(NETHERITE_PICKAXE)) {
+            //Logger.logAdminLog("Not pickaxe");
+            return;
+        }
+        if (e.getPlayer().getInventory().getItemInMainHand().hasEnchant(Main.getInstance().hammerEnchantment)) {
+            //Logger.logAdminLog("Posiada MŁOT");
+            if (e.getPlayer().isSneaking()) {
+                return;
+            }
+            for (Block b : PowerUtils.getSurroundingBlocks(Objects.requireNonNull(getBlockFace(e.getPlayer())), e.getBlock())) {
+                if (b == null) {
+                    continue;
+                }
+                //Logger.logAdminLog("Blok do zniszczenia");
+                ArrayList<Material> stone = new ArrayList<Material>() {
+                    {
+                        add(STONE);
+                        add(DIORITE);
+                        add(ANDESITE);
+                        add(GRANITE);
+                    }
+                };
+                if (b.getType() == e.getBlock().getType() || (stone.contains(b.getType()) && stone.contains(e.getBlock().getType()))) {
+                    //Logger.logAdminLog("Zły blok");
+                    if (!inRegion(b.getLocation(), e.getPlayer().getUniqueId())) {
+                        //Logger.logAdminLog("BREAK!");
+                        b.breakNaturally(e.getPlayer().getInventory().getItemInMainHand(), true);
+                        e.getPlayer().updateInventory();
+                    } else {
+                        //Logger.logAdminLog("Blok na cuboidzie");
+                    }
+                }
+            }
+        } else {
+            //Logger.logAdminLog("Posiada NOT MŁOT");
+        }
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     private void farmBreak(BlockBreakEvent event) {

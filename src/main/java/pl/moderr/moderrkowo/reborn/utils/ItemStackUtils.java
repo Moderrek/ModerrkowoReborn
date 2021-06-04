@@ -9,8 +9,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import pl.moderr.moderrkowo.reborn.Main;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class ItemStackUtils {
 
@@ -254,17 +258,57 @@ public class ItemStackUtils {
         return count <= found;
     }
 
-    public static ItemStack addEnchantment(ItemStack item, Enchantment enchantment, int level){
+    public static ItemStack addEnchantment(ItemStack item, Enchantment enchantment, int level) {
         ItemStack i = item.clone();
-        i.addEnchantment(enchantment, level);
+        if (Main.getInstance().customEnchants.containsKey(enchantment.getName().replace(" ", "_"))) {
+            System.out.println("IS CUSTOM");
+            i.addUnsafeEnchantment(Main.getInstance().customEnchants.get(enchantment.getName().replace(" ", "_")), level);
+            System.out.println("ENCHANTED CUSTOM");
+            if (i.getLore() == null) {
+                i.setLore(new ArrayList<String>() {
+                    {
+                        add(ColorUtils.color("&7" + enchantment.getName() + " " + toRoman(level)));
+                    }
+                });
+            } else {
+                i.setLore(new ArrayList<String>(i.getLore()) {
+                    {
+                        add(ColorUtils.color("&7" + enchantment.getName() + " " + toRoman(level)));
+                    }
+                });
+            }
+        } else {
+            System.out.println("ISN'T CUSTOM");
+            i.addEnchantment(enchantment, level);
+            System.out.println("ENCHANTED NORMAL");
+        }
         return i;
     }
 
-    public static ItemStack generateEnchantmentBook(Map<Enchantment, Integer> enchantments){
+    public static ItemStack generateEnchantmentBook(Map<Enchantment, Integer> enchantments) {
         ItemStack itemStack = new ItemStack(Material.ENCHANTED_BOOK);
         EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemStack.getItemMeta();
-        for(Enchantment enchantment : enchantments.keySet()){
-            meta.addStoredEnchant(enchantment, enchantments.get(enchantment), true);
+        for (Enchantment enchantment : enchantments.keySet()) {
+            if (Main.getInstance().customEnchants.containsKey(enchantment.getName().replace(" ", "_"))) {
+                meta.addStoredEnchant(enchantment, enchantments.get(enchantment), true);
+                if (meta.getLore() == null) {
+                    System.out.println("is null");
+                    meta.setLore(new ArrayList<String>() {
+                        {
+                            add(ColorUtils.color("&7" + enchantment.getName() + " " + toRoman(enchantments.get(enchantment))));
+                        }
+                    });
+                } else {
+                    System.out.println("isn't null");
+                    meta.setLore(new ArrayList<String>(meta.getLore()) {
+                        {
+                            add(ColorUtils.color("&7" + enchantment.getName() + " " + toRoman(enchantments.get(enchantment))));
+                        }
+                    });
+                }
+            } else {
+                meta.addStoredEnchant(enchantment, enchantments.get(enchantment), true);
+            }
         }
         itemStack.setItemMeta(meta);
         return itemStack;

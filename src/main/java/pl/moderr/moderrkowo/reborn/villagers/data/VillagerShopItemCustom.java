@@ -23,10 +23,10 @@ public class VillagerShopItemCustom extends VillagerShopItem{
             u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.ZWYKLA), false);
         }
         if(type.equals(VillagerShopItemCustomType.KEYDNIADZIECKA)){
-            u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.DNIADZIECKA), false);
+            u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Key, ModerrCaseEnum.SKAZENIA), false);
         }
         if(type.equals(VillagerShopItemCustomType.CHESTDNIADZIECKA)){
-            u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.DNIADZIECKA), false);
+            u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.SKAZENIA), false);
         }
         if(type.equals(VillagerShopItemCustomType.CHESTZWYKLA)){
             u.getUserChestStorage().addItem(new StorageItem(1, StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), false);

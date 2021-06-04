@@ -109,9 +109,11 @@ commands:
   acheststorage:
     permission: moderr.op
   rynek:
-    aliases: [ah,sklep,sprzedaz]
+    aliases: [ ah,sklep,sprzedaz ]
   przelej:
-    aliases: [pay,przelew,share]
+    aliases: [ pay,przelew,share ]
+  aenchant:
+    permission: moderr.op
 permissions:
   moderr.vanish:
     default: op

@@ -13,8 +13,8 @@ import java.util.Random;
 
 public class ModerrCaseRandomTool extends ModerrCaseItem{
 
-    public ModerrCaseRandomTool(ModerrCaseItemRarity rarity) {
-        super(null, rarity);
+    public ModerrCaseRandomTool(ModerrCaseItemRarity rarity, int weight) {
+        super(null, rarity, weight);
     }
 
     ItemStack randomTool(){

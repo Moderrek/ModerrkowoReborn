@@ -2,7 +2,10 @@ package pl.moderr.moderrkowo.reborn.villagers;
 
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -448,22 +451,23 @@ public class VillagerManager implements Listener {
         }, new ArrayList<VillagerShopItem>() {
             {
                 add(new VillagerShopItem(new ItemStack(Material.FEATHER, 8), 1, 1, "Nie uszkodzone piórko kury", 30, 27, false));
-                add(new VillagerShopItem(new ItemStack(Material.ROTTEN_FLESH, 8), 1,1, "Mięso potwora", 11, 9, true));
+                add(new VillagerShopItem(new ItemStack(Material.ROTTEN_FLESH, 8), 1, 1, "Mięso potwora", 11, 9, false));
 
-                add(new VillagerShopItem(new ItemStack(Material.GUNPOWDER, 1), 2,1, "Proch strzelniczy", 90, 38, true));
-                add(new VillagerShopItem(new ItemStack(Material.POISONOUS_POTATO, 8), 2,1, "Zepsuty ziemniak", 55, 55,true));
+                add(new VillagerShopItem(new ItemStack(Material.GUNPOWDER, 1), 2, 1, "Proch strzelniczy", 90, 38, false));
+                add(new VillagerShopItem(new ItemStack(Material.POISONOUS_POTATO, 8), 2, 1, "Zepsuty ziemniak", 55, 55, false));
 
-                add(new VillagerShopItem(new ItemStack(Material.STRING, 4), 3,1, "Jedwabna nitka", 33, 10,true));
-                add(new VillagerShopItem(new ItemStack(Material.SPIDER_EYE, 5), 3,1, "Oko sześcionoga", 25, 14,true));
+                add(new VillagerShopItem(new ItemStack(Material.STRING, 4), 3, 1, "Jedwabna nitka", 33, 10, false));
+                add(new VillagerShopItem(new ItemStack(Material.SPIDER_EYE, 5), 3, 1, "Oko sześcionoga", 25, 14, false));
 
-                add(new VillagerShopItem(new ItemStack(Material.ARROW, 16), 4,1, "Naostrzona kamienna strzała", 100, 25,true));
-                add(new VillagerShopItem(new ItemStack(Material.BONE, 3), 4,1, "Wapienna kość", 55, 19, true));
-                add(new VillagerShopItem(new ItemStack(Material.BLAZE_ROD, 1), 4,1, "Kość płomyka", 1220,900, false));
+                add(new VillagerShopItem(new ItemStack(Material.ARROW, 16), 4, 1, "Naostrzona kamienna strzała", 100, 25, false));
+                add(new VillagerShopItem(new ItemStack(Material.BONE, 2), 4, 1, "Wapienna kość", 12000, 39, true));
+                add(new VillagerShopItem(new ItemStack(Material.BLAZE_ROD, 1), 4, 1, "Kość płomyka", 1520, 650, false));
 
-                add(new VillagerShopItem(new ItemStack(Material.SLIME_BALL), 5,1, "Kleista maź", 275, 99, true));
-                add(new VillagerShopItem(new ItemStack(Material.RABBIT_FOOT, 2), 5,1, "Noga rzadkiego królika", 120, 70, true));
+                add(new VillagerShopItem(new ItemStack(Material.SLIME_BALL), 5, 1, "Kleista maź", 275, 99, false));
+                add(new VillagerShopItem(new ItemStack(Material.RABBIT_FOOT, 2), 5, 1, "Noga rzadkiego królika", 120, 70, false));
 
-                add(new VillagerShopItem(new ItemStack(Material.FERMENTED_SPIDER_EYE), 6,1, "Fermentowane oko pająka", 75, 48, true));
+                add(new VillagerShopItem(new ItemStack(Material.BONE_MEAL, 1), 6, 4, "Wapienna mąka", 2000, 200, true));
+                add(new VillagerShopItem(new ItemStack(Material.FERMENTED_SPIDER_EYE), 6, 1, "Fermentowane oko pająka", 75, 48, false));
 
                 add(new VillagerShopItem(new ItemStack(Material.SHIELD), 7, 4, "Tarcza Łowcy", 1000));
             }
@@ -989,17 +993,21 @@ public class VillagerManager implements Listener {
             }
         }, new ArrayList<VillagerShopItem>(){
             {
-                add(new VillagerShopItem(new ItemStack(Material.WHEAT,16), 1, 1,"Pospolita roślina", 60, 9, true));
-                add(new VillagerShopItem(new ItemStack(Material.WHEAT_SEEDS, 8), 1, 1,"Nasiona pospolitej rośliny", 12,3, false));
-                add(new VillagerShopItem(new ItemStack(Material.BEETROOT_SEEDS, 16), 3,3, "Nasiona buraka", 96, 8, false));
-                add(new VillagerShopItem(new ItemStack(Material.BEETROOT, 16), 4, 4, "Sprzedaje na kontrakcie", 180,45, true));
-                add(new VillagerShopItem(new ItemStack(Material.CARROT,32), 4, 3,"Umyta marchewka", 500, 125, true));
-                add(new VillagerShopItem(new ItemStack(Material.SUGAR_CANE, 24), 5, 1, "Nadaje się do papieru", 1000,50, true));
-                add(new VillagerShopItem(new ItemStack(Material.CACTUS, 32), 6,1, "Kaktus", 896,224, true));
-                add(new VillagerShopItem(new ItemStack(Material.VINE, 16), 7,1, "", 704,176, true));
-                add(new VillagerShopItem(new ItemStack(Material.COCOA_BEANS, 64), 8,5, "Kakao", 32000,3200, false));
-                add(new VillagerShopItem(new ItemStack(Material.MELON_SLICE, 16), 8, 4, "", 2384, 288, false));
-                add(new VillagerShopItem(new ItemStack(Material.COOKIE,64),8,6,"",15872,1984,false));
+                add(new VillagerShopItem(new ItemStack(Material.WHEAT, 16), 1, 1, "Pospolita roślina", 1200, 9, false));
+                add(new VillagerShopItem(new ItemStack(Material.WHEAT_SEEDS, 8), 1, 1, "Nasiona pospolitej rośliny", 12, 3, false));
+                add(new VillagerShopItem(new ItemStack(Material.BEETROOT_SEEDS, 16), 3, 3, "Nasiona buraka", 96, 8, false));
+                add(new VillagerShopItem(new ItemStack(Material.BEETROOT, 16), 4, 4, "Sprzedaje na kontrakcie", 180, 45, false));
+                add(new VillagerShopItem(new ItemStack(Material.CARROT, 32), 4, 3, "Umyta marchewka", 500, 125, false));
+                add(new VillagerShopItem(new ItemStack(Material.SUGAR_CANE, 24), 5, 1, "Nadaje się do papieru", 1000, 150, false));
+                add(new VillagerShopItem(new ItemStack(Material.CACTUS, 32), 7, 1, "Kaktus", 896, 224, false));
+                add(new VillagerShopItem(new ItemStack(Material.VINE, 16), 8, 1, "", 704, 176, true));
+                add(new VillagerShopItem(new ItemStack(Material.COCOA_BEANS, 16), 9, 5, "Kakao", 32000, 3200, true));
+                add(new VillagerShopItem(new ItemStack(Material.MELON_SLICE, 8), 9, 4, "", 2384, 288, true));
+                add(new VillagerShopItem(new ItemStack(Material.COOKIE, 64), 9, 6, "", 34920, 3984, false));
+                add(new VillagerShopItem(new ItemStack(Material.NETHER_WART, 1), 9, 6, "", 0, 9120, true));
+                add(new VillagerShopItem(new ItemStack(Material.GOLDEN_APPLE, 4), 9, 6, "", 0, 5000, false));
+                add(new VillagerShopItem(new ItemStack(Material.WEEPING_VINES, 1), 9, 6, "", 0, 500, true));
+                add(new VillagerShopItem(new ItemStack(Material.TWISTING_VINES, 1), 9, 6, "", 0, 750, false));
             }
         }));
         AddVillager(new VillagerData("Handlarz", new ArrayList<>(), new ArrayList<VillagerShopItem>(){
@@ -1008,8 +1016,8 @@ public class VillagerManager implements Listener {
                 add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.CHEST,1,ColorUtils.color("&7Skrzynia &a&lZWYKŁA")), 0,0, "Kup skrzynie do otwierania", 400, VillagerShopItemCustomType.CHESTZWYKLA));
                 add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.TRIPWIRE_HOOK,1,ColorUtils.color("&7Klucz &a&lZWYKŁA")), 0,0, "Kup klucz do otwierania", 1250, VillagerShopItemCustomType.KEYZWYKLA));
 
-                add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.ENDER_CHEST,1,ColorUtils.color("&7Skrzynia &d&lDNIA DZIECKA")), 0,0, "Kup skrzynie do otwierania", 3500, VillagerShopItemCustomType.CHESTDNIADZIECKA));
-                add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.TRIPWIRE_HOOK,1,ColorUtils.color("&7Klucz &d&lDNIA DZIECKA")), 0,0, "Kup klucz do otwierania", 9550, VillagerShopItemCustomType.KEYDNIADZIECKA));
+                    add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.CRIMSON_NYLIUM,1,ColorUtils.color("&7Skrzynia &c&lSKAŻENIA")), 0,0, "Kup skrzynie do otwierania", 3500, VillagerShopItemCustomType.CHESTDNIADZIECKA));
+                add(new VillagerShopItemCustom(ItemStackUtils.createGuiItem(Material.TRIPWIRE_HOOK,1,ColorUtils.color("&7Klucz &c&lSKAŻENIA")), 0,0, "Kup klucz do otwierania", 12500, VillagerShopItemCustomType.KEYDNIADZIECKA));
             }
         }));
         AddVillager(new VillagerData("Rybak", new ArrayList<Quest>(){
@@ -1187,9 +1195,32 @@ public class VillagerManager implements Listener {
                     }
                 }));
             }
-        }, new ArrayList<VillagerShopItem>(){
+        }, new ArrayList<VillagerShopItem>() {
             {
-                add(new VillagerShopItem(new ItemStack(Material.STRING, 4),0,0,"",0,10, true));
+                add(new VillagerShopItem(new ItemStack(Material.STRING, 4), 0, 0, "", 0, 10, false));
+            }
+        }));
+        AddVillager(new VillagerData("Gornik", new ArrayList<>(), new ArrayList<VillagerShopItem>() {
+            {
+                add(new VillagerShopItem(new ItemStack(Material.STONE, 16), 0, 0, "", 300, 48, false));
+                add(new VillagerShopItem(new ItemStack(Material.GRANITE, 16), 0, 0, "", 300, 80, false));
+                add(new VillagerShopItem(new ItemStack(Material.ANDESITE, 16), 0, 0, "", 300, 80, false));
+                add(new VillagerShopItem(new ItemStack(Material.DIORITE, 16), 0, 0, "", 300, 80, false));
+                add(new VillagerShopItem(new ItemStack(Material.GRAVEL, 32), 0, 0, "", 300, 80, false));
+                add(new VillagerShopItem(new ItemStack(Material.FLINT, 32), 0, 0, "", 1000, 256, false));
+                add(new VillagerShopItem(new ItemStack(Material.COAL, 1), 0, 0, "", 275, 55, false));
+                add(new VillagerShopItem(new ItemStack(Material.CHARCOAL, 1), 0, 0, "", 275, 57, false));
+                add(new VillagerShopItem(new ItemStack(Material.IRON_INGOT, 1), 0, 0, "", 2550, 150, false));
+                add(new VillagerShopItem(new ItemStack(Material.NETHER_BRICK, 1), 0, 0, "", 1000, 250, false));
+                add(new VillagerShopItem(new ItemStack(Material.GOLD_INGOT, 1), 0, 0, "", 26500, 500, false));
+                add(new VillagerShopItem(new ItemStack(Material.DIAMOND, 1), 0, 0, "", 75000, 2575, false));
+                add(new VillagerShopItem(new ItemStack(Material.QUARTZ, 1), 0, 0, "", 0, 165, false));
+                add(new VillagerShopItem(new ItemStack(Material.NAME_TAG, 2), 0, 0, "", 10000, 1000, false));
+                add(new VillagerShopItem(new ItemStack(Material.CREEPER_HEAD, 1), 0, 0, "", 0, 10000, false));
+                add(new VillagerShopItem(new ItemStack(Material.ZOMBIE_HEAD, 1), 0, 0, "", 0, 10000, false));
+                add(new VillagerShopItem(new ItemStack(Material.SKELETON_SKULL, 1), 0, 0, "", 0, 10000, false));
+                add(new VillagerShopItem(new ItemStack(Material.WITHER_SKELETON_SKULL, 1), 0, 0, "", 0, 200000, false));
+                add(new VillagerShopItem(ItemStackUtils.addEnchantment(ItemStackUtils.createItem(Material.NETHERITE_PICKAXE, ColorUtils.color("&cMłot"), ""), Main.getInstance().hammerEnchantment, 1), 0, 6, "Kilof 3x3 [Połącz z kilofem]", 3000000));
             }
         }));
         //</editor-fold> Villagers
@@ -1234,9 +1265,9 @@ public class VillagerManager implements Listener {
         if (unlocked) {
             mat = item.getItem().getType();
             if(item.getItem().getItemMeta().hasDisplayName()){
-                name = ColorUtils.color("&6" + item.getItem().getItemMeta().getDisplayName());
+                name = ColorUtils.color("&6" + item.getItem().getItemMeta().getDisplayName() + " &8[&9Poziom " + item.getRequiredQuestLevel() + "&8]");
             }else{
-                name = ColorUtils.color("&6" + ChatUtil.materialName(item.getItem().getType()));
+                name = ColorUtils.color("&6" + ChatUtil.materialName(item.getItem().getType()) + " &8[&9Poziom " + item.getRequiredQuestLevel() + "&8]");
             }
         } else {
             mat = Material.IRON_BARS;
@@ -1274,13 +1305,13 @@ public class VillagerManager implements Listener {
                 }
                 if(ItemStackUtils.getCountOfMaterial(u.getPlayer(), item.getItem().getType()) >= item.getItem().getAmount()){
                     if(item.isBoostedSell()){
-                        lore.add(ColorUtils.color("&7Cena sprzedaży: &8&n&m" + ChatUtil.getMoney(item.getSellCost()) + "&a " + item.getFinalCost() + " &a⬆"));
+                        lore.add(ColorUtils.color("&7Cena sprzedaży: &8&n&m" + ChatUtil.getMoney(item.getSellCost()) + "&a " + ChatUtil.getMoney(item.getFinalCost()) + " &a⬆"));
                     }else{
                         lore.add(ColorUtils.color("&7Cena sprzedaży: &a" + ChatUtil.getMoney(item.getFinalCost())));
                     }
                 }else{
                     if(item.isBoostedSell()){
-                        lore.add(ColorUtils.color("&7Cena sprzedaży: &8&n&m" + ChatUtil.getMoney(item.getSellCost()) + "&c " + item.getFinalCost() + " &a⬆"));
+                        lore.add(ColorUtils.color("&7Cena sprzedaży: &8&n&m" + ChatUtil.getMoney(item.getSellCost()) + "&c " + ChatUtil.getMoney(item.getFinalCost()) + " &a⬆"));
                     }else{
                         lore.add(ColorUtils.color("&7Cena sprzedaży: &c" + ChatUtil.getMoney(item.getFinalCost())));
                     }
@@ -1295,12 +1326,14 @@ public class VillagerManager implements Listener {
             if(item.getCost() != 0){
                 if (item.canSell()) {
                     lore.add(ColorUtils.color("&7LPM aby zakupić &8| &cPPM aby sprzedać"));
+                    lore.add(ColorUtils.color("&8Sprzedaj z SHIFTem aby sprzedać stack"));
                 } else {
                     lore.add(ColorUtils.color("&7Kliknij aby zakupić"));
                 }
             }else{
                 if (item.canSell()) {
                     lore.add(ColorUtils.color("&7PPM aby sprzedać"));
+                    lore.add(ColorUtils.color("&8Sprzedaj z SHIFTem aby sprzedać stack"));
                 } else {
                     lore.add(ColorUtils.color("&7Brak dostępnych akcji"));
                 }
@@ -1661,8 +1694,50 @@ public class VillagerManager implements Listener {
                         }
                         return;
                     }
+                    if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+                        if (e.isShiftClick() && e.isRightClick()) {
+                            if (shopItem.canSell()) {
+                                boolean unlocked = data.getQuestIndex() + 1 >= shopItem.getRequiredQuestLevel() && u.getLevel() >= shopItem.getRequiredPlayerLevel();
+
+                                // item 8
+                                // 8 x 8 = 64
+
+                                int max = 0;
+                                int temp = 0;
+                                for (int j = 0; j != 64; j++) {
+                                    if (temp >= shopItem.getItem().getMaxStackSize()) {
+                                        temp = shopItem.getItem().getMaxStackSize();
+                                        max = temp / shopItem.getItem().getAmount();
+                                        break;
+                                    } else {
+                                        temp += shopItem.getItem().getAmount();
+                                        max += 1;
+                                    }
+                                }
+
+                                if (unlocked) {
+                                    if (ItemStackUtils.getCountOfMaterial(p, shopItem.getItem().getType()) >= shopItem.getItem().getAmount() * max) {
+                                        ItemStackUtils.consumeItem(p, shopItem.getItem().getAmount() * max, shopItem.getItem().getType());
+                                        u.addMoney(shopItem.getFinalCost() * max);
+                                        p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &c- " + ChatUtil.materialName(shopItem.getItem().getType()) + " x" + shopItem.getItem().getAmount() * max));
+                                        p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &a+ " + ChatUtil.getMoney(shopItem.getFinalCost() * max)));
+                                        p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_TRADE, 1, 1);
+                                        ModerrkowoLog.LogAdmin(ColorUtils.color("&6" + p.getName() + " &7sprzedał &6" + ChatUtil.materialName(shopItem.getItem().getType()) + " &7do " + villagerData.getName()));
+                                    } else {
+                                        p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                                        p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &cChcesz sprzedać coś czego nie masz?"));
+                                        return;
+                                    }
+                                } else {
+                                    p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+                                    p.sendMessage(ColorUtils.color(villagerData.getName() + " &6> &cNiestety, tego nie kupuję."));
+                                    return;
+                                }
+                            }
+                        }
+                    }
                     if (e.getAction() == InventoryAction.PICKUP_HALF) {
-                        if(shopItem.canSell()){
+                        if (shopItem.canSell()) {
                             boolean unlocked = data.getQuestIndex() + 1 >= shopItem.getRequiredQuestLevel() && u.getLevel() >= shopItem.getRequiredPlayerLevel();
                             if (unlocked) {
                                 if (ItemStackUtils.getCountOfMaterial(p, shopItem.getItem().getType()) >= shopItem.getItem().getAmount()) {

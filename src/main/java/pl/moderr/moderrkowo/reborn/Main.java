@@ -6,6 +6,7 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import pl.moderr.moderrkowo.reborn.antylogout.AntyLogoutManager;
@@ -21,7 +22,9 @@ import pl.moderr.moderrkowo.reborn.commands.user.messages.ReplyCommand;
 import pl.moderr.moderrkowo.reborn.commands.user.teleportation.*;
 import pl.moderr.moderrkowo.reborn.commands.user.weather.PogodaCommand;
 import pl.moderr.moderrkowo.reborn.cuboids.CuboidsManager;
+import pl.moderr.moderrkowo.reborn.discord.DiscordManager;
 import pl.moderr.moderrkowo.reborn.economy.*;
+import pl.moderr.moderrkowo.reborn.enchantments.HammerEnchantment;
 import pl.moderr.moderrkowo.reborn.events.EventManager;
 import pl.moderr.moderrkowo.reborn.listeners.*;
 import pl.moderr.moderrkowo.reborn.mysql.MySQL;
@@ -32,13 +35,19 @@ import pl.moderr.moderrkowo.reborn.utils.HexResolver;
 import pl.moderr.moderrkowo.reborn.utils.Logger;
 import pl.moderr.moderrkowo.reborn.villagers.VillagerManager;
 
+import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public final class Main extends JavaPlugin {
+
+
+    public HammerEnchantment hammerEnchantment = null;
 
     private static Main instance;
     public TimeVoter timeVoter;
@@ -55,6 +64,12 @@ public final class Main extends JavaPlugin {
     private static MySQL mySQL;
     public RynekManager instanceRynekManager;
     public EventManager eventManager;
+    public HashMap<String, Enchantment> customEnchants = new HashMap<>();
+    public DiscordManager discordManager;
+
+    public static String getVersion() {
+        return "v1.4.5 (SHOP UPDATE)";
+    }
 
     @Contract(pure = true)
     public static Main getInstance() {
@@ -71,18 +86,43 @@ public final class Main extends JavaPlugin {
         return mySQL;
     }
 
+    public static void loadEnchantments(Enchantment enchantment) {
+        boolean registered = false;
+        try {
+            Field f = Enchantment.class.getDeclaredField("acceptingNew");
+            f.setAccessible(true);
+            f.set(null, true);
+            Enchantment.registerEnchantment(enchantment);
+            registered = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (registered) {
+            Main.getInstance().customEnchants.put(enchantment.getName().replace(" ", "_"), enchantment);
+            Logger.logPluginMessage("Zarejestrowano " + enchantment.getKey() + " [" + enchantment.getName() + "]");
+        } else {
+            //Main.getInstance().customEnchants.put(enchantment.getName().replace(" ", "_"), enchantment);
+            Logger.logPluginMessage("Wystąpił błąd przy rejestrowaniu " + enchantment.getKey());
+        }
+    }
+
     @Override
     public void onEnable() {
         long start = System.currentTimeMillis();
         Logger.logPluginMessage("Wczytywanie wtyczki Main");
         instance = this;
         LoadPluginConfig();
+
+        hammerEnchantment = new HammerEnchantment();
+        loadEnchantments(hammerEnchantment);
+
         LoadDataYML();
         initializeListeners();
         initializeAntyLogout();
         initializeAutoMessage();
         initializeCommands();
         new OpeningManager();
+
         villagerManager = new VillagerManager();
         timeVoter = new TimeVoter();
         Logger.logPluginMessage("Wczytano głosowanie czasu");
@@ -91,7 +131,15 @@ public final class Main extends JavaPlugin {
         initializeMySQL();
         instanceRynekManager = new RynekManager();
         eventManager = new EventManager();
-        eventLoop();
+        //eventLoop();
+
+        discordManager = new DiscordManager();
+        try {
+            discordManager.StartBot();
+        } catch (LoginException e) {
+            e.printStackTrace();
+        }
+
         Bukkit.getPluginManager().registerEvents(instanceRynekManager, this);
         Logger.logPluginMessage("Wczytano działki");
         Logger.logPluginMessage("Wczytano plugin w &8(&a" + (System.currentTimeMillis() - start) + "ms&8)");
@@ -101,13 +149,8 @@ public final class Main extends JavaPlugin {
         BossBar bossBar = Bukkit.createBossBar(ColorUtils.color("&eTrwa wydarzenie"), BarColor.RED, BarStyle.SOLID);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             Bukkit.getOnlinePlayers().forEach(bossBar::addPlayer);
-            Bukkit.getScheduler().runTaskLater(this, new Runnable() {
-                @Override
-                public void run() {
-                    bossBar.getPlayers().forEach(bossBar::removePlayer);
-                }
-            }, 60);
-        }, 0,20*60*15);
+            Bukkit.getScheduler().runTaskLater(this, () -> bossBar.getPlayers().forEach(bossBar::removePlayer), 20 * 10);
+        }, 0, 20 * 60 * 15);
     }
 
     private void initializeMySQL() {
@@ -117,6 +160,24 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        discordManager.EndBot();
+        for (Enchantment enchantment : customEnchants.values()) {
+            try {
+                Field byIdField = Enchantment.class.getDeclaredField("byKey");
+                Field byNameField = Enchantment.class.getDeclaredField("byName");
+
+                byIdField.setAccessible(true);
+                byNameField.setAccessible(true);
+
+                HashMap<Integer, Enchantment> byId = (HashMap<Integer, Enchantment>) byIdField.get(null);
+                HashMap<Integer, Enchantment> byName = (HashMap<Integer, Enchantment>) byNameField.get(null);
+
+                byId.remove(enchantment.getKey());
+                byName.remove(enchantment.getName());
+            } catch (Exception ignored) {
+
+            }
+        }
         try {
             instanceRynekManager.save();
         } catch (SQLException throwables) {
@@ -165,6 +226,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(getCommand("saveusers")).setExecutor(new SaveUsersCommand());
         Objects.requireNonNull(getCommand("holo")).setExecutor(new HoloCommand());
         Objects.requireNonNull(getCommand("abank")).setExecutor(new ABankCommand());
+        Objects.requireNonNull(getCommand("aenchant")).setExecutor(new AEnchantment());
 
         Objects.requireNonNull(getCommand("ranking")).setExecutor(new RankingCommand());
         Objects.requireNonNull(getCommand("craftingdzialka")).setExecutor(new CraftingDzialkaCommand());

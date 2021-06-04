@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import pl.moderr.moderrkowo.reborn.Main;
 import pl.moderr.moderrkowo.reborn.mysql.User;
@@ -20,16 +21,59 @@ import pl.moderr.moderrkowo.reborn.opening.data.*;
 import pl.moderr.moderrkowo.reborn.utils.ChatUtil;
 import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
 import pl.moderr.moderrkowo.reborn.utils.ItemStackUtils;
+import pl.moderr.moderrkowo.reborn.utils.WeightedList;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class OpeningManager implements Listener {
 
-    private String invname = ColorUtils.color("&eOtwórz &6&lSKRZYNIE");
+    private final String invname = ColorUtils.color("&eOtwórz &6&lSKRZYNIE");
+    private final String invnamepercent = ColorUtils.color("&ePodgląd skrzyni");
 
     public OpeningManager(){
         Bukkit.getPluginManager().registerEvents(this, Main.getInstance());
+    }
+
+
+    private Inventory getInvPercent(ModerrCase chest) {
+        Inventory inv = Bukkit.createInventory(null,54,invnamepercent);
+        for (int i = 0; i != 53; i++) {
+            inv.setItem(i, ItemStackUtils.createGuiItem(Material.GRAY_STAINED_GLASS_PANE, 1, " "));
+        }
+        for (int i = 53 - 8; i != 53; i++) {
+            inv.setItem(i, ItemStackUtils.createGuiItem(Material.BLACK_STAINED_GLASS_PANE, 1, " "));
+        }
+        for(int i = 0; i != chest.itemList().size(); i++){
+            ModerrCaseItem item = new ArrayList<>(chest.itemList()).get(i);
+            String color = "";
+            switch (item.rarity()){
+                case POSPOLITE:
+                    color = "&f&lPospolite";
+                    break;
+                case RZADKIE:
+                    color = "&9&lRzadkie";
+                    break;
+                case LEGENDARNE:
+                    color = "&d&lLegendarne";
+                    break;
+                case MITYCZNE:
+                    color = "&c&lMityczne";
+                    break;
+            }
+            ItemStack itemstack = item.item();
+            ItemStackUtils.changeLore(itemstack, " ", ColorUtils.color("&eRzadkość: " + color), ColorUtils.color("&eSzansa: " + checkPercent(chest.randomList(), item.weight)), " ");
+            inv.setItem(i, itemstack);
+        }
+        inv.setItem(53, ItemStackUtils.createGuiItem(Material.BARRIER, 1, ColorUtils.color("&cWyjdź")));
+        return inv;
+    }
+
+    public String checkPercent(WeightedList<ModerrCaseItem> weightedList, double weight){
+        double suma = weightedList.values().stream().mapToInt(integer -> integer).sum();
+        DecimalFormat df = new DecimalFormat("##.##%");
+        return df.format(weight /suma);
     }
 
     public Inventory getInv(User u){
@@ -51,16 +95,18 @@ public class OpeningManager implements Listener {
                 ColorUtils.color("   &7Klucze: &6" + u.getUserChestStorage().getAmountOfItem(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.ZWYKLA)) + "   "),
                 ColorUtils.color(" "),
                 ColorUtils.color("   &8Kliknij aby otworzyć" + "   "),
+                ColorUtils.color("   &8PPM szczegóły"),
                 ColorUtils.color(" ")
         ));
-        ModerrCase chest2 = ModerrCaseConstants.getCase(ModerrCaseEnum.DNIADZIECKA);
-        inv.setItem(31, ItemStackUtils.createGuiItem(Material.ENDER_CHEST, 1,
+        ModerrCase chest2 = ModerrCaseConstants.getCase(ModerrCaseEnum.SKAZENIA);
+        inv.setItem(31, ItemStackUtils.createGuiItem(Material.CRIMSON_NYLIUM, 1,
                 ColorUtils.color("   &7Skrzynia " + chest2.name() + "   "),
                 ColorUtils.color(" "),
-                ColorUtils.color("   &7Posiadasz: &6" + u.getUserChestStorage().getAmountOfItem(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.DNIADZIECKA)) + "   "),
-                ColorUtils.color("   &7Klucze: &6" + u.getUserChestStorage().getAmountOfItem(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.DNIADZIECKA)) + "   "),
+                ColorUtils.color("   &7Posiadasz: &6" + u.getUserChestStorage().getAmountOfItem(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.SKAZENIA)) + "   "),
+                ColorUtils.color("   &7Klucze: &6" + u.getUserChestStorage().getAmountOfItem(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.SKAZENIA)) + "   "),
                 ColorUtils.color(" "),
                 ColorUtils.color("   &8Kliknij aby otworzyć" + "   "),
+                ColorUtils.color("   &8PPM szczegóły"),
                 ColorUtils.color(" ")
         ));
         return inv;
@@ -88,7 +134,6 @@ public class OpeningManager implements Listener {
             offset.getAndIncrement();
             anim(p, inv, randomizedReward, offset.get());
             if(offset.get() == maxOffset){
-                openingCase.get(p.getUniqueId()).setReward(randomizedReward.get(3+ offset.get()));
                 OpenCaseReward(p.getUniqueId());
                 p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1,1);
             }else{
@@ -96,6 +141,7 @@ public class OpeningManager implements Listener {
             }
         },0,5L);
         openingCase.put(p.getUniqueId(), new OpeningData(new ModerrCaseItemTemp(randomizedReward.get(3).item(), randomizedReward.get(3).rarity()), chest.name(), inv, taskId));
+        openingCase.get(p.getUniqueId()).setReward(randomizedReward.get(3+maxOffset));
         p.openInventory(inv);
     }
 
@@ -166,7 +212,9 @@ public class OpeningManager implements Listener {
 
     @EventHandler
     public void closeInventory(InventoryCloseEvent e){
-
+        if(ModerrCaseConstants.getGuiNames().contains(e.getView().getTitle())){
+            OpenCaseReward(e.getPlayer().getUniqueId());
+        }
     }
 
 
@@ -186,6 +234,13 @@ public class OpeningManager implements Listener {
             }
             return;
         }
+        if(e.getView().getTitle().equals(invnamepercent)){
+            e.setCancelled(true);
+            if(e.getSlot() == 53){
+                e.getWhoClicked().closeInventory();
+            }
+            return;
+        }
         if(ModerrCaseConstants.getGuiNames().contains(e.getView().getTitle())){
             e.setCancelled(true);
             ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
@@ -194,6 +249,10 @@ public class OpeningManager implements Listener {
             e.setCancelled(true);
             User u = UserManager.getUser(e.getWhoClicked().getUniqueId());
             if(e.getSlot() == 22){
+                if(e.isRightClick()){
+                    e.getWhoClicked().openInventory(getInvPercent(ModerrCaseConstants.getCase(ModerrCaseEnum.ZWYKLA)));
+                    return;
+                }
                 if(u.getUserChestStorage().hasItem(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), 1) && u.getUserChestStorage().hasItem(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.ZWYKLA), 1)){
                     OpenCase((Player) e.getWhoClicked(), ModerrCaseConstants.getCase(ModerrCaseEnum.ZWYKLA));
                     u.getUserChestStorage().subtractChest(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.ZWYKLA), 1);
@@ -205,10 +264,14 @@ public class OpeningManager implements Listener {
                 return;
             }
             if(e.getSlot() == 31){
-                if(u.getUserChestStorage().hasItem(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.DNIADZIECKA), 1) && u.getUserChestStorage().hasItem(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.DNIADZIECKA), 1)){
-                    OpenCase((Player) e.getWhoClicked(), ModerrCaseConstants.getCase(ModerrCaseEnum.DNIADZIECKA));
-                    u.getUserChestStorage().subtractChest(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.DNIADZIECKA), 1);
-                    u.getUserChestStorage().subtractKey(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.DNIADZIECKA), 1);
+                if(e.isRightClick()){
+                    e.getWhoClicked().openInventory(getInvPercent(ModerrCaseConstants.getCase(ModerrCaseEnum.SKAZENIA)));
+                    return;
+                }
+                if(u.getUserChestStorage().hasItem(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.SKAZENIA), 1) && u.getUserChestStorage().hasItem(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.SKAZENIA), 1)){
+                    OpenCase((Player) e.getWhoClicked(), ModerrCaseConstants.getCase(ModerrCaseEnum.SKAZENIA));
+                    u.getUserChestStorage().subtractChest(new StorageItemKey(StorageItemType.Chest, ModerrCaseEnum.SKAZENIA), 1);
+                    u.getUserChestStorage().subtractKey(new StorageItemKey(StorageItemType.Key, ModerrCaseEnum.SKAZENIA), 1);
                 }else{
                     e.getWhoClicked().sendMessage(ColorUtils.color("&8[!] &cNie posiadasz potrzebnych przedmiotów"));
                     e.getWhoClicked().sendMessage(ColorUtils.color("&8[!] &eAby otworzyć skrzynke potrzebna jest skrzynia i klucz"));
@@ -222,7 +285,6 @@ public class OpeningManager implements Listener {
             ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);
         }
     }
-
 
     @EventHandler
     public void interact(PlayerInteractEvent e){

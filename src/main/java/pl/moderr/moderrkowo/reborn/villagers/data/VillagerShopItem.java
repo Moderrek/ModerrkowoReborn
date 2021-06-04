@@ -56,6 +56,9 @@ public class VillagerShopItem {
         return sellCost;
     }
     public int getFinalCost(){
+        if(!boostedSell){
+            return getSellCost();
+        }
         int temp = getSellCost();
         temp = (int) (temp * 1.5d);
         if(temp > cost){

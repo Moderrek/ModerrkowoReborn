@@ -45,12 +45,13 @@ public class UserManager {
         try {
             if (!Main.getMySQL().getQuery().userExists(uuid)) {
                 Main.getMySQL().getQuery().insertUser(uuid, p.getName());
-                u = new User(uuid, 0, 0, new PlayerVillagersData(), new UserChestStorage(new HashMap<>()));
+                u = new User(uuid, 500, 0, new PlayerVillagersData(), new UserChestStorage(new HashMap<>()));
                 p.getInventory().addItem(new ItemStack(Material.STONE_AXE));
-                p.getInventory().addItem(new ItemStack(Material.OAK_LOG,2));
+                p.getInventory().addItem(new ItemStack(Material.OAK_LOG, 2));
                 p.getInventory().addItem(new ItemStack(Material.BREAD, 16));
                 p.sendMessage(ColorUtils.color("&aZostałeś pomyślnie zarejestrowany!"));
-                p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP,1,1);
+                p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                Bukkit.broadcastMessage(ColorUtils.color("  &fPowitajcie nowego gracza &a" + p.getName() + " &fna serwerze!"));
             } else {
                 Main.getMySQL().getQuery().updateLastSeen(uuid);
                 u = new User(uuid, Main.getMySQL().getQuery().getMoney(uuid), Main.getMySQL().getQuery().getExp(uuid), Main.getMySQL().getQuery().getQuestData(uuid), Main.getMySQL().getQuery().getUserChestStorage(uuid));

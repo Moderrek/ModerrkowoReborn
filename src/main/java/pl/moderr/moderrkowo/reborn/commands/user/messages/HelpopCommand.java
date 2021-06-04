@@ -1,17 +1,18 @@
 package pl.moderr.moderrkowo.reborn.commands.user.messages;
 
-import club.minnced.discord.webhook.WebhookClient;
-import club.minnced.discord.webhook.send.WebhookEmbed;
-import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import com.destroystokyo.paper.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import pl.moderr.moderrkowo.reborn.Main;
 import pl.moderr.moderrkowo.reborn.utils.ColorUtils;
 import pl.moderr.moderrkowo.reborn.utils.Logger;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HelpopCommand implements CommandExecutor {
 
@@ -25,13 +26,18 @@ public class HelpopCommand implements CommandExecutor {
                 p.sendMessage(ColorUtils.color("&8[!] &aPomyślnie wysłano!"));
                 p.sendMessage(ColorUtils.color("&8[&9Pomoc&8] &7" + p.getName() + "&8: &e" + Logger.getMessage(args, 0, true)));
                 p.sendTitle(new Title(ColorUtils.color("&6&lModerrkowo"), ColorUtils.color("&aWysłano wiadomość.")));
-                /*WebhookClient webhookClient = WebhookClient.withUrl("https://discord.com/api/webhooks/847363621004115969/rpH-tCedU8v0nR57W6PSOm8q9oqS3iLHftvt6t3OJH-U-Tkj2uBQ82O_LLVHhqFbxCNP");
-                WebhookEmbedBuilder embedBuilder = new WebhookEmbedBuilder()
-                        .setTitle(new WebhookEmbed.EmbedTitle("Helop - Moderrkowo", null))
-                        .setAuthor(new WebhookEmbed.EmbedAuthor(p.getName(), "https://minotar.net/avatar/" + p.getName() + "/50.png",null))
-                        .setDescription(Logger.getMessage(args, 0, true)).setColor(0xFFFFFF);
-                webhookClient.send(embedBuilder.build());
-                webhookClient.close();*/
+                AtomicInteger i = new AtomicInteger();
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    if(p.isOp()){
+                        i.getAndIncrement();
+                    }
+                });
+                if(i.get() == 0){
+                    Main.getInstance().discordManager.sendHelpop(p, Logger.getMessage(args, 0, true));
+                }
+                if(i.get() == 1 && p.isOp()){
+                    Main.getInstance().discordManager.sendHelpop(p, Logger.getMessage(args, 0, true));
+                }
                 return true;
             } else {
                 p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);

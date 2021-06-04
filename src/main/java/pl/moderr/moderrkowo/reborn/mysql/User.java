@@ -52,9 +52,10 @@ public class User {
             oldLevel = getLevel();
             getPlayer().sendMessage(ColorUtils.color("  "));
             getPlayer().sendMessage(ColorUtils.color("  "));
-            getPlayer().sendMessage(ColorUtils.color("  &eGratulacje odblokowałeś &c" + getLevel() + " poziom &epostaci!"));
+            getPlayer().sendMessage(ColorUtils.color("  &fGratulacje odblokowałeś &a" + getLevel() + " poziom &epostaci!"));
             getPlayer().sendMessage(ColorUtils.color("  "));
             getPlayer().sendMessage(ColorUtils.color("  "));
+            getPlayer().sendTitle(ColorUtils.color("&fNowy poziom postaci"), ColorUtils.color("&a⬆ ") + getLevel() + " ⬆");
             getPlayer().spawnParticle(Particle.TOTEM, getPlayer().getLocation().getX(), getPlayer().getLocation().getY(), getPlayer().getLocation().getZ(), 20, 1, 1, 1, 0.1f);
             getPlayer().playSound(getPlayer().getLocation(), Sound.ENTITY_WITHER_SHOOT, 1,2);
         }
@@ -243,24 +244,29 @@ public class User {
             score3.setScore(-3);
             score4.setScore(-4);
             score5.setScore(-5);
-            score7.setScore(last-1);
-            score9.setScore(last-2);
-            score8.setScore(last-3);
+            score7.setScore(last - 1);
+            score9.setScore(last - 2);
+            score8.setScore(last - 3);
         }
         getPlayer().setScoreboard(scoreboard);
     }
+
     private int oldLevel;
-    public int getLevel(int pd){
-        if(pd >= 244){
+
+    public int getLevel(int pd) {
+        if (pd >= 390) {
+            return 6;
+        }
+        if (pd >= 244) {
             return 5;
         }
-        if(pd >= 100){
+        if (pd >= 100) {
             return 4;
         }
-        if(pd >= 75){
+        if (pd >= 75) {
             return 3;
         }
-        if(pd >= 49){
+        if (pd >= 49) {
             return 2;
         }
         return 1;

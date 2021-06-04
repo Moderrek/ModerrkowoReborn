@@ -7,6 +7,7 @@ public class WeightedList<K> extends HashMap<K, Integer> {
 
     private int total;
 
+
     @Override
     public Integer put(K a, Integer b) {
         Integer i = super.put(a, b);

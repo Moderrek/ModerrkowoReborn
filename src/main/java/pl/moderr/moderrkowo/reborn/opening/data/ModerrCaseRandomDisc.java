@@ -11,8 +11,8 @@ import java.util.HashMap;
 
 public class ModerrCaseRandomDisc extends ModerrCaseItem{
 
-    public ModerrCaseRandomDisc(ModerrCaseItemRarity rarity) {
-        super(null, rarity);
+    public ModerrCaseRandomDisc(ModerrCaseItemRarity rarity, int weight) {
+        super(null, rarity, weight);
     }
 
     @Override

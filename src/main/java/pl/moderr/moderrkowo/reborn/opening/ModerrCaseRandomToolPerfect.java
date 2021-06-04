@@ -3,6 +3,7 @@ package pl.moderr.moderrkowo.reborn.opening;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import pl.moderr.moderrkowo.reborn.Main;
 import pl.moderr.moderrkowo.reborn.opening.data.ModerrCaseItem;
 import pl.moderr.moderrkowo.reborn.opening.data.ModerrCaseItemRarity;
 import pl.moderr.moderrkowo.reborn.utils.ItemStackUtils;
@@ -15,8 +16,8 @@ import java.util.Random;
 
 public class ModerrCaseRandomToolPerfect extends ModerrCaseItem{
 
-    public ModerrCaseRandomToolPerfect(ModerrCaseItemRarity rarity) {
-        super(null, rarity);
+    public ModerrCaseRandomToolPerfect(ModerrCaseItemRarity rarity, int weight) {
+        super(null, rarity, weight);
     }
 
     ItemStack randomTool(){
@@ -34,6 +35,7 @@ public class ModerrCaseRandomToolPerfect extends ModerrCaseItem{
                 put(Material.FISHING_ROD,20);
                 put(Material.NETHERITE_PICKAXE,50);
                 put(Material.NETHERITE_HELMET,50);
+                put(Material.BOW,30);
             }
         };
         return new ItemStack(materialWeightedList.get(new Random()),1);
@@ -48,6 +50,9 @@ public class ModerrCaseRandomToolPerfect extends ModerrCaseItem{
         for (Enchantment ench : Enchantment.values()) {
 
             // Check if the enchantment can be applied to the item, save it if it can
+            if(ench.getKey() == Main.getInstance().hammerEnchantment.getKey()){
+                continue;
+            }
             if (ench.canEnchantItem(item)) {
                 if(ench.isCursed()){
                     continue;

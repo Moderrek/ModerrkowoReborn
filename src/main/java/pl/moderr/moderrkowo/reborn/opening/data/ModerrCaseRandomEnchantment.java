@@ -10,8 +10,8 @@ import java.util.Random;
 
 public class ModerrCaseRandomEnchantment extends ModerrCaseItem{
 
-    public ModerrCaseRandomEnchantment(ModerrCaseItemRarity rarity) {
-        super(null, rarity);
+    public ModerrCaseRandomEnchantment(ModerrCaseItemRarity rarity, int weight) {
+        super(null, rarity, weight);
     }
 
     Enchantment getRandomEnchantment(){
