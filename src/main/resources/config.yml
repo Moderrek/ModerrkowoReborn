@@ -1,12 +1,9 @@
-#ServerName
-servername: "<gradient:#FD4F1D:#FCE045>Moderrkowo"
-#Time Vote
+#TimeVote
 time-to-vote: 15
 vote-delay: 10
 disable-command: true
 #Discord
 discord-token: "token"
-#motd
-motd-first: "<gradient:#FD4F1D:#FCE045>Moderrkowo &r&8[1.16]"
+#Motd
 motd-secound: "&aPrace techniczne"
 motd-secound2: "Prace techniczne"

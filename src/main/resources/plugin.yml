@@ -1,10 +1,10 @@
-name: ModerrkowoReborn
-version: ${project.version}
-main: pl.moderr.moderrkowo.reborn.Main
+name: Moderrkowo
+version: 2.0
+main: pl.moderr.moderrkowo.core.Main
 api-version: 1.16
-authors: [MODERR]
-description: Glowny plugin do serwera Minecraft z dodatkami Moderrkowo serii "Reborn"
-depend: [WorldGuard]
+authors: [ MODERR ]
+description: Glowny plugin do serwera Minecraft z dodatkami Moderrkowo Sezon 2
+softdepend: [ ProtocolLib,PacketWrapper,WorldGuard,Citizens ]
 commands:
   ranking:
     description: Komenda umozliwająca pokazanie top listy graczy
@@ -14,16 +14,16 @@ commands:
   adminchat:
     aliases: [ ac ]
     description: Prywatny chat dla administratorow
-    permission: moderr.adminchat
+    permission: moderr.checkid
   ahelpop:
     description: Odpowiadanie na helpop graczy
     permission: moderr.adminhelpop
   chat:
     description: Ustawienia chatu
-    permission: moderr.admin
+    permission: moderr.admin.chat
   endersee:
     description: Podglad skrzyni kresu
-    permission: moderr.admin
+    permission: moderr.admin.viewinv
   fly:
     description: Umozliwia latanie
     permission: moderr.admin
@@ -84,12 +84,12 @@ commands:
   regulamin:
     description: Caly regulamin serwera
   villager:
-    permission: moderr.admin
+    permission: moderr.admin.npc
     description: Respi villagerow
   spawn:
     description: Teleportuje na spawna
   setspawn:
-    permission: moderr.admin
+    permission: moderr.admin.setspawn
     description: Ustawia teleportacje na spawna
   wyplac:
     aliases: [ withdraw,banknot ]
@@ -101,19 +101,41 @@ commands:
   sethome:
     aliases: [ ustawdom ]
   saveusers:
-    permission: moderr.op
+    permission: moderr.op.saveusers
   holo:
-    permission: moderr.op
+    permission: moderr.op.holo
   abank:
-    permission: moderr.op
+    permission: moderr.op.abank
   acheststorage:
-    permission: moderr.op
+    permission: moderr.op.acheststorage
   rynek:
-    aliases: [ ah,sklep,sprzedaz ]
+    aliases: [ ah,sprzedaz ]
   przelej:
     aliases: [ pay,przelew,share ]
-  aenchant:
-    permission: moderr.op
+  zetony:
+    aliases: [ sezonpierwszy ]
+  przedmioty:
+  arank:
+    permission: moderr.op.arank
+  tpw:
+    permission: moderr.op.tpw
+  sidebar:
+    aliases: [ tabela,tablica ]
+  poziom:
+    aliases: [ level ]
+  poradnik:
+    aliases: [ tutorial,oprowadzenie,help ]
+  listanpc:
+  wpln:
+    aliases: [ virtualpln,virtualmoney ]
+  odbierz:
+  sklep:
+  enderchest:
+    aliases: [ ender ]
+  crafting:
+    aliases: [ craft ]
+  delhome:
+    aliases: [ usundom,deletehome ]
 permissions:
   moderr.vanish:
     default: op
