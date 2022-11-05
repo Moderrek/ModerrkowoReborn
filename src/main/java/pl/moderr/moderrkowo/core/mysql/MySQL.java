@@ -29,11 +29,11 @@ public class MySQL {
     public final String virtualPln = "virtualpln";
 
     public void enable() {
-        host = "mysql.titanaxe.com";
+        host = "host :)";
         port = 3306;
-        database = "srv162810";
-        username = "srv162810";
-        password = "dikbluJD";
+        database = "database";
+        username = "user";
+        password = "pass";
         try {
             synchronized (this) {
                 if (getConnection() != null && !getConnection().isClosed()) {
